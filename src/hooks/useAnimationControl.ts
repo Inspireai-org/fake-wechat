@@ -26,7 +26,7 @@ export function useAnimationControl({
   onAnimationComplete 
 }: UseAnimationControlProps): [AnimationState, AnimationControls] {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+  const [currentMessageIndex, setCurrentMessageIndex] = useState(-1);
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -103,7 +103,7 @@ export function useAnimationControl({
   const play = useCallback(() => {
     if (currentMessageIndex >= messages.length - 1) {
       // 如果已经播放完毕，重新开始
-      setCurrentMessageIndex(0);
+      setCurrentMessageIndex(-1);
     }
     setIsPlaying(true);
   }, [currentMessageIndex, messages.length]);
@@ -115,7 +115,7 @@ export function useAnimationControl({
 
   const reset = useCallback(() => {
     setIsPlaying(false);
-    setCurrentMessageIndex(0);
+    setCurrentMessageIndex(-1);
     clearTimers();
   }, [clearTimers]);
 
@@ -124,7 +124,7 @@ export function useAnimationControl({
   }, []);
 
   const goToMessage = useCallback((index: number) => {
-    const clampedIndex = Math.max(0, Math.min(messages.length - 1, index));
+    const clampedIndex = Math.max(-1, Math.min(messages.length - 1, index));
     setCurrentMessageIndex(clampedIndex);
     if (isPlaying) {
       clearTimers();

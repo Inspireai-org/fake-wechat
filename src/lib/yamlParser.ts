@@ -46,7 +46,7 @@ export function parseYamlConfig(yamlContent: string): ChatData {
         speaker: m.speaker,
         content: m.content,
         time: m.time,
-        type: (m.type as 'message' | 'pause' | 'typing' | 'location') || 'message'
+        type: (m.type as any) || 'message'
       };
 
       // 处理特殊类型的消息
@@ -88,7 +88,7 @@ export function generateYamlConfig(chatData: ChatData): string {
       }))
     },
     messages: chatData.messages.map(m => {
-      const message: Record<string, unknown> = {
+      const message: any = {
         speaker: m.speaker,
         content: m.content,
         time: m.time
