@@ -120,7 +120,7 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
   };
 
   return (
-    <div className="w-80 bg-white border-l border-gray-200 flex flex-col h-full">
+    <div className="w-72 bg-white border-l border-gray-200 flex flex-col h-full">
       {/* 标签页 */}
       <div className="flex border-b border-gray-200">
         {[
@@ -143,7 +143,7 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
       </div>
 
       {/* 内容区域 */}
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto p-4 scrollbar-hide">
         {/* 场景标题 */}
         <div className="mb-6">
           <label className="block text-sm font-medium text-gray-700 mb-2">

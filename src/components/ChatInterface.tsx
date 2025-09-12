@@ -55,7 +55,9 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const visibleMessages = isPlaying ? messages.slice(0, currentMessageIndex + 1) : messages;
 
   return (
-    <div className="h-full w-full bg-[#F7F7F7] overflow-y-auto px-3 py-3 space-y-3">
+    <div className="h-full w-full bg-[#F7F7F7] flex flex-col">
+      {/* 聊天消息区域 */}
+      <div className="flex-1 overflow-y-auto px-2 py-2 space-y-2 text-sm scrollbar-hide">
       {visibleMessages.map((message, index) => {
         const participant = message.speaker ? getParticipant(message.speaker) : null;
         const isCurrentUser = message.speaker === scene.participants[0]?.name;
@@ -109,6 +111,16 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           </div>
         );
       })}
+      </div>
+      
+      {/* 底部输入栏 */}
+      <div className="flex-shrink-0">
+        <img 
+          src="/input.png" 
+          alt="WeChat Input Bar"
+          className="w-full h-auto"
+        />
+      </div>
     </div>
   );
 };

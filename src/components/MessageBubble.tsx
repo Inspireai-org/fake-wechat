@@ -16,7 +16,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
     <div className={`flex items-end space-x-2 ${isCurrentUser ? 'flex-row-reverse space-x-reverse' : ''}`}>
       {/* 头像 */}
       {!isCurrentUser && (
-        <div className="w-9 h-9 rounded-full bg-gray-300 flex-shrink-0 overflow-hidden">
+        <div className="w-7 h-7 rounded-md bg-gray-300 flex-shrink-0 overflow-hidden">
           {participant?.avatar ? (
             <img 
               src={participant.avatar} 
@@ -32,10 +32,10 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
       )}
 
       {/* 消息内容 */}
-      <div className={`max-w-[240px] px-3 py-2 ${
+      <div className={`max-w-[180px] px-2.5 py-1.5 ${
         isCurrentUser 
-          ? 'bg-[#95EC69] text-black ml-auto rounded-[18px] rounded-br-[4px]' 
-          : 'bg-white text-black rounded-[18px] rounded-bl-[4px] shadow-sm'
+          ? 'bg-[#95EC69] text-black ml-auto rounded-lg rounded-br-sm' 
+          : 'bg-white text-black rounded-lg rounded-bl-sm shadow-sm'
       }`}>
         {/* 发送者名称（仅在群聊中显示，这里为了演示保留） */}
         {!isCurrentUser && participant && (
@@ -45,14 +45,14 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
         )}
         
         {/* 消息文本 */}
-        <div className="text-[16px] leading-[22px] whitespace-pre-wrap">
+        <div className="text-sm leading-5 whitespace-pre-wrap">
           {message.content}
         </div>
       </div>
 
       {/* 当前用户的头像 */}
       {isCurrentUser && (
-        <div className="w-9 h-9 rounded-full bg-gray-300 flex-shrink-0 overflow-hidden">
+        <div className="w-7 h-7 rounded-md bg-gray-300 flex-shrink-0 overflow-hidden">
           {participant?.avatar ? (
             <img 
               src={participant.avatar} 

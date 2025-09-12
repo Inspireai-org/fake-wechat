@@ -105,7 +105,7 @@ function App() {
   return (
     <div className="h-screen w-screen bg-gray-100 flex">
       {/* 左侧：手机预览区域 */}
-      <div className="flex-1 flex flex-col items-center justify-center p-8">
+      <div className="flex-1 flex flex-col items-center justify-center p-4">
         <IPhoneFrame>
           <div ref={chatContainerRef} className="h-full w-full flex flex-col">
             <WeChatNavBar 
@@ -122,7 +122,7 @@ function App() {
         </IPhoneFrame>
         
         {/* 播放控制器 */}
-        <div className="mt-6 w-full max-w-md">
+        <div className="mt-3 w-full max-w-sm">
           <PlaybackControls
             animationState={animationState}
             animationControls={animationControls}

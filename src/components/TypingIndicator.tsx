@@ -18,7 +18,7 @@ export const TypingIndicator: React.FC<TypingIndicatorProps> = ({
     <div className={`flex items-end space-x-2 ${isCurrentUser ? 'flex-row-reverse space-x-reverse' : ''}`}>
       {/* 头像 */}
       {!isCurrentUser && (
-        <div className="w-10 h-10 rounded-full bg-gray-300 flex-shrink-0 overflow-hidden">
+        <div className="w-7 h-7 rounded-md bg-gray-300 flex-shrink-0 overflow-hidden">
           {participant?.avatar ? (
             <img 
               src={participant.avatar} 
@@ -34,21 +34,21 @@ export const TypingIndicator: React.FC<TypingIndicatorProps> = ({
       )}
 
       {/* 打字指示器 */}
-      <div className={`px-4 py-3 rounded-lg ${
+      <div className={`px-3 py-2 rounded-lg ${
         isCurrentUser 
           ? 'bg-[#95EC69] ml-auto' 
           : 'bg-white border border-gray-200'
       }`}>
         <div className="flex space-x-1">
-          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+          <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+          <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+          <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
         </div>
       </div>
 
       {/* 当前用户的头像 */}
       {isCurrentUser && (
-        <div className="w-10 h-10 rounded-full bg-gray-300 flex-shrink-0 overflow-hidden">
+        <div className="w-7 h-7 rounded-md bg-gray-300 flex-shrink-0 overflow-hidden">
           {participant?.avatar ? (
             <img 
               src={participant.avatar} 

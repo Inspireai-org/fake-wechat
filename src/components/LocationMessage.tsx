@@ -17,7 +17,7 @@ export const LocationMessage: React.FC<LocationMessageProps> = ({
     <div className={`flex items-end space-x-2 ${isCurrentUser ? 'flex-row-reverse space-x-reverse' : ''}`}>
       {/* 头像 */}
       {!isCurrentUser && (
-        <div className="w-10 h-10 rounded-full bg-gray-300 flex-shrink-0 overflow-hidden">
+        <div className="w-7 h-7 rounded-md bg-gray-300 flex-shrink-0 overflow-hidden">
           {participant?.avatar ? (
             <img 
               src={participant.avatar} 
@@ -33,14 +33,14 @@ export const LocationMessage: React.FC<LocationMessageProps> = ({
       )}
 
       {/* 位置消息内容 */}
-      <div className={`max-w-xs lg:max-w-md rounded-lg overflow-hidden ${
+      <div className={`max-w-xs rounded-lg overflow-hidden ${
         isCurrentUser 
           ? 'bg-[#95EC69] ml-auto' 
           : 'bg-white border border-gray-200'
       }`}>
         {/* 发送者名称 */}
         {!isCurrentUser && participant && (
-          <div className="px-4 pt-2 pb-1">
+          <div className="px-3 pt-1.5 pb-0.5">
             <div className="text-xs text-gray-500">
               {participant.name}
             </div>
@@ -48,15 +48,15 @@ export const LocationMessage: React.FC<LocationMessageProps> = ({
         )}
         
         {/* 地图预览区域 */}
-        <div className="bg-gray-100 h-32 flex items-center justify-center">
+        <div className="bg-gray-100 h-24 flex items-center justify-center">
           <div className="text-center">
-            <MapPin className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+            <MapPin className="w-6 h-6 text-gray-400 mx-auto mb-1" />
             <div className="text-xs text-gray-500">地图预览</div>
           </div>
         </div>
         
         {/* 位置信息 */}
-        <div className="px-4 py-3">
+        <div className="px-3 py-2">
           <div className="text-sm font-medium text-black mb-1">
             {message.content}
           </div>
@@ -70,7 +70,7 @@ export const LocationMessage: React.FC<LocationMessageProps> = ({
 
       {/* 当前用户的头像 */}
       {isCurrentUser && (
-        <div className="w-10 h-10 rounded-full bg-gray-300 flex-shrink-0 overflow-hidden">
+        <div className="w-7 h-7 rounded-md bg-gray-300 flex-shrink-0 overflow-hidden">
           {participant?.avatar ? (
             <img 
               src={participant.avatar} 
