@@ -1,0 +1,50 @@
+# 对话场景配置
+scene:
+  title: "朋友间的对话"
+  participants:
+    - name: "小明"
+      avatar: "avatar1.jpg"
+    - name: "小红" 
+      avatar: "avatar2.jpg"
+
+# 对话内容
+messages:
+  - speaker: "小明"
+    content: "你今天有空吗？"
+    time: "10:30"
+
+  - speaker: "小红"
+    content: "现在在忙，等会儿联系你"
+    time: "10:31"
+
+  - type: "pause"
+    duration: "30分钟"
+    description: "等待中..."
+
+  - speaker: "小红"
+    content: "好了，现在有空了"
+    time: "11:02"
+
+  - speaker: "小明"
+    content: "太好了！"
+    time: "11:02"
+
+  - speaker: "小明"
+    content: "我们去吃午饭吧？"
+    time: "11:02"
+
+  - type: "typing"
+    speaker: "小红"
+    duration: "3秒"
+
+  - speaker: "小红"
+    content: "好啊，在哪里见面？"
+    time: "11:03"
+
+  - type: "location"
+    speaker: "小明"
+    content: "商业街星巴克"
+    coordinates: 
+      latitude: 31.2304
+      longitude: 121.4737
+    time: "11:04"
