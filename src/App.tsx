@@ -4,7 +4,7 @@ import { ConfigPanel } from './components/ConfigPanel';
 import { PlaybackControls } from './components/PlaybackControls';
 import { useAnimationControl } from './hooks/useAnimationControl';
 import { useGifExport } from './hooks/useGifExport';
-import { parseYamlConfig, generateYamlConfig } from './lib/yamlParser';
+import { parseYamlConfig } from './lib/yamlParser';
 import WeChatNavBar from './components/WeChatNavBar';
 import IPhoneFrame from './components/iPhoneFrame';
 
@@ -44,7 +44,7 @@ function App() {
   });
 
   // GIF导出
-  const { exportState, exportToGif, resetExportState } = useGifExport();
+  const { exportState, exportToGif, resetExportState: _resetExportState } = useGifExport();
   
   // 处理聊天数据更新
   const handleChatDataChange = (newChatData: ChatData) => {

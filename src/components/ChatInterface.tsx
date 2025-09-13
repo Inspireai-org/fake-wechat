@@ -4,6 +4,10 @@ import { TimeStamp } from './TimeStamp';
 import { TypingIndicator } from './TypingIndicator';
 import { LocationMessage } from './LocationMessage';
 import { PauseIndicator } from './PauseIndicator';
+import { VoiceMessage } from './VoiceMessage';
+import { ImageMessage } from './ImageMessage';
+import { MessageStatus } from './MessageStatus';
+import { RecallMessage } from './RecallMessage';
 
 export interface Participant {
   name: string;
@@ -11,16 +15,28 @@ export interface Participant {
 }
 
 export interface Message {
+  // Existing fields
   speaker?: string;
   content?: string;
   time?: string;
-  type?: 'message' | 'pause' | 'typing' | 'location';
+  type?: 'message' | 'pause' | 'typing' | 'location' | 'voice' | 'image' | 'recall';
   duration?: string;
   description?: string;
   coordinates?: {
     latitude: number;
     longitude: number;
   };
+  
+  // New fields for enhanced features
+  voiceDuration?: string;           // Voice duration like "10""
+  voiceText?: string;                // Voice-to-text content
+  imageUrl?: string | string[];      // Image URL(s) for single or multiple images
+  imageDescription?: string;         // Image description
+  status?: 'sending' | 'sent' | 'read'; // Message status
+  statusDuration?: 'short' | 'medium' | 'long'; // Status duration
+  animationDelay?: 'short' | 'medium' | 'long'; // Animation delay
+  recalled?: boolean;                // Whether message is recalled
+  recallDelay?: 'short' | 'medium' | 'long'; // Recall delay
 }
 
 export interface ChatScene {
@@ -31,6 +47,23 @@ export interface ChatScene {
 export interface ChatData {
   scene: ChatScene;
   messages: Message[];
+  
+  // New fields for animation and theme
+  animationConfig?: {
+    globalSpeed: number;
+    defaultDelay: 'short' | 'medium' | 'long';
+    enableEffects: {
+      textReveal: boolean;
+      focusEffect: boolean;
+      blurBackground: boolean;
+    };
+  };
+  
+  theme?: {
+    primaryColor: string;
+    backgroundColor: string;
+    fontFamily?: string;
+  };
 }
 
 interface ChatInterfaceProps {
@@ -79,6 +112,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
               participant={participant}
               isCurrentUser={isCurrentUser}
               isActive={index === currentMessageIndex && isPlaying}
+              duration={message.statusDuration}
             />
           );
         }
@@ -94,6 +128,46 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           );
         }
 
+        if (message.type === 'voice') {
+          return (
+            <div key={index} className="space-y-2">
+              {message.time && <TimeStamp time={message.time} />}
+              <VoiceMessage
+                message={message}
+                participant={participant}
+                isCurrentUser={isCurrentUser}
+                isPlaying={index <= currentMessageIndex}
+              />
+            </div>
+          );
+        }
+
+        if (message.type === 'image') {
+          return (
+            <div key={index} className="space-y-2">
+              {message.time && <TimeStamp time={message.time} />}
+              <ImageMessage
+                message={message}
+                participant={participant}
+                isCurrentUser={isCurrentUser}
+              />
+            </div>
+          );
+        }
+
+        if (message.type === 'recall') {
+          return (
+            <div key={index} className="space-y-2">
+              {message.time && <TimeStamp time={message.time} />}
+              <RecallMessage
+                originalMessage={message}
+                recallDelay={message.recallDelay}
+                showReEdit={false}
+              />
+            </div>
+          );
+        }
+
         // 普通文字消息
         return (
           <div key={index} className="space-y-2">
@@ -103,11 +177,19 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
             )}
             
             {/* 消息气泡 */}
-            <MessageBubble
-              message={message}
-              participant={participant}
-              isCurrentUser={isCurrentUser}
-            />
+            <div className="flex items-center">
+              <MessageBubble
+                message={message}
+                participant={participant}
+                isCurrentUser={isCurrentUser}
+              />
+              {message.status && isCurrentUser && (
+                <MessageStatus
+                  status={message.status}
+                  duration={message.statusDuration || 'medium'}
+                />
+              )}
+            </div>
           </div>
         );
       })}

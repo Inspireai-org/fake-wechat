@@ -1,0 +1,134 @@
+scene:
+  title: "许阳和小宁"
+  participants:
+    - name: "许阳"
+      avatar: "https://ui-avatars.com/api/?name=XY&background=5856D6&color=fff&size=200"
+    - name: "小宁"
+      avatar: "https://ui-avatars.com/api/?name=XN&background=FF2D55&color=fff&size=200"
+  theme:
+    primaryColor: "#95EC69"
+    backgroundColor: "#F7F7F7"
+  animation:
+    globalSpeed: 1.0
+    defaultDelay: medium
+
+messages:
+  # 开场
+  - speaker: "许阳"
+    content: "我是许阳，今天大头告诉我一些17年前的事"
+    time: "21:30"
+    status: sent
+
+  - type: pause
+    duration: "2s"
+    description: "对方查看消息"
+
+  # 输入状态
+  - type: typing
+    speaker: "小宁"
+    statusDuration: long
+    hesitate: true
+
+  # 语音消息
+  - type: voice
+    speaker: "小宁"
+    voiceDuration: "15\""
+    voiceText: "许阳...你知道吗？那天给你纸条之后，我后悔了整整17年。"
+    time: "21:35"
+
+  - type: pause
+    duration: "3s"
+    description: "许阳正在听语音"
+
+  # 回忆图片
+  - type: image
+    speaker: "许阳"
+    imageUrl: 
+      - "https://via.placeholder.com/150x150/FFE5B4/000000?text=Heart+Left"
+      - "https://via.placeholder.com/150x150/FFE5B4/000000?text=Heart+Right"
+    imageDescription: "两张纸拼成的心"
+    time: "21:33"
+    animationDelay: medium
+
+  # 文字消息
+  - speaker: "小宁"
+    content: "还记得我们一起去看《哈利波特与魔法石》吗？"
+    time: "21:36"
+    status: sent
+    statusDuration: short
+
+  - speaker: "许阳"
+    content: "记得，那是我第一次看电影"
+    time: "21:37"
+
+  # 撤回消息
+  - type: recall
+    originalMessage: "其实我当时想牵你的手"
+    speaker: "小宁"
+    recallDelay: short
+    time: "21:38"
+
+  - type: typing
+    speaker: "小宁"
+    statusDuration: medium
+
+  - speaker: "小宁"
+    content: "你还记得我当时穿的什么吗？"
+    time: "21:39"
+
+  # 长语音
+  - type: voice
+    speaker: "许阳"
+    voiceDuration: "32\""
+    voiceText: "白色的衬衫，牛仔裤，马尾辫...我记得很清楚。那天你笑得特别开心。"
+    time: "21:40"
+
+  - type: pause
+    duration: "5s"
+    description: "两人都陷入回忆"
+
+  # 表白
+  - speaker: "小宁"
+    content: "许阳，如果时间能重来..."
+    time: "21:42"
+    status: sending
+    statusDuration: medium
+
+  - type: typing
+    speaker: "许阳"
+    statusDuration: short
+
+  - speaker: "许阳"
+    content: "时间不能重来，但我们还有未来"
+    time: "21:43"
+    status: sent
+
+  # 感动时刻
+  - type: voice
+    speaker: "小宁"
+    voiceDuration: "8\""
+    voiceText: "真的吗？我们真的还有机会吗？"
+    time: "21:44"
+
+  - speaker: "许阳"
+    content: "17年了，我也在等你"
+    time: "21:45"
+    status: read
+    statusDuration: long
+
+  # 结局
+  - type: image
+    speaker: "小宁"
+    imageUrl: "https://via.placeholder.com/300x200/FFB6C1/000000?text=We+Together"
+    imageDescription: "我们的合照"
+    time: "21:46"
+
+  - speaker: "许阳"
+    content: "明天见面吗？老地方"
+    time: "21:47"
+
+  - speaker: "小宁"
+    content: "好，不见不散"
+    time: "21:48"
+    status: read
+    statusDuration: short

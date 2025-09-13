@@ -8,6 +8,15 @@ export interface YamlConfig {
       name: string;
       avatar: string;
     }>;
+    theme?: {
+      primaryColor?: string;
+      backgroundColor?: string;
+      fontFamily?: string;
+    };
+    animation?: {
+      globalSpeed?: number;
+      defaultDelay?: 'short' | 'medium' | 'long';
+    };
   };
   messages: Array<{
     speaker?: string;
@@ -20,6 +29,18 @@ export interface YamlConfig {
       latitude: number;
       longitude: number;
     };
+    // New fields for enhanced features
+    voiceDuration?: string;
+    voiceText?: string;
+    imageUrl?: string | string[];
+    imageDescription?: string;
+    status?: 'sending' | 'sent' | 'read';
+    statusDuration?: 'short' | 'medium' | 'long';
+    animationDelay?: 'short' | 'medium' | 'long';
+    recalled?: boolean;
+    recallDelay?: 'short' | 'medium' | 'long';
+    hesitate?: boolean;
+    originalMessage?: string;
   }>;
 }
 
@@ -46,7 +67,7 @@ export function parseYamlConfig(yamlContent: string): ChatData {
         speaker: m.speaker,
         content: m.content,
         time: m.time,
-        type: (m.type as any) || 'message'
+        type: (m.type as Message['type']) || 'message'
       };
 
       // 处理特殊类型的消息
@@ -57,18 +78,58 @@ export function parseYamlConfig(yamlContent: string): ChatData {
         message.duration = m.duration;
       } else if (m.type === 'location') {
         message.coordinates = m.coordinates;
+      } else if (m.type === 'voice') {
+        message.voiceDuration = m.voiceDuration;
+        message.voiceText = m.voiceText;
+      } else if (m.type === 'image') {
+        message.imageUrl = m.imageUrl;
+        message.imageDescription = m.imageDescription;
+      } else if (m.type === 'recall') {
+        message.content = m.originalMessage;
+        message.recalled = true;
+        message.recallDelay = m.recallDelay;
       }
+
+      // 处理通用字段
+      if (m.status) message.status = m.status;
+      if (m.statusDuration) message.statusDuration = m.statusDuration;
+      if (m.animationDelay) message.animationDelay = m.animationDelay;
 
       return message;
     });
 
-    return {
+    // 构建ChatData对象
+    const chatData: ChatData = {
       scene: {
         title: config.scene.title,
         participants
       },
       messages
     };
+
+    // 添加动画配置
+    if (config.scene.animation) {
+      chatData.animationConfig = {
+        globalSpeed: config.scene.animation.globalSpeed || 1.0,
+        defaultDelay: config.scene.animation.defaultDelay || 'medium',
+        enableEffects: {
+          textReveal: false,
+          focusEffect: false,
+          blurBackground: false
+        }
+      };
+    }
+
+    // 添加主题配置
+    if (config.scene.theme) {
+      chatData.theme = {
+        primaryColor: config.scene.theme.primaryColor || '#95EC69',
+        backgroundColor: config.scene.theme.backgroundColor || '#F7F7F7',
+        fontFamily: config.scene.theme.fontFamily
+      };
+    }
+
+    return chatData;
   } catch (error) {
     console.error('Failed to parse YAML:', error);
     throw new Error(`YAML parsing failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -88,7 +149,7 @@ export function generateYamlConfig(chatData: ChatData): string {
       }))
     },
     messages: chatData.messages.map(m => {
-      const message: any = {
+      const message: Record<string, unknown> = {
         speaker: m.speaker,
         content: m.content,
         time: m.time

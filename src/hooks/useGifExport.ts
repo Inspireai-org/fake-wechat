@@ -165,9 +165,9 @@ export function useGifExport() {
   }, []);
 
   const exportToVideo = useCallback(async (
-    chatContainerRef: React.RefObject<HTMLElement>,
-    messages: Message[],
-    options: ExportOptions = {}
+    _chatContainerRef: React.RefObject<HTMLElement>,
+    _messages: Message[],
+    _options: ExportOptions = {}
   ) => {
     // 视频导出功能（可选实现）
     console.log('Video export not implemented yet');
