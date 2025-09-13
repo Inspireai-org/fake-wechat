@@ -1,0 +1,168 @@
+scene:
+  title: "异地恋"
+  participants:
+    - name: "晨风"
+      avatar: "https://ui-avatars.com/api/?name=CF&background=667eea&color=fff"
+    - name: "雨露"
+      avatar: "https://ui-avatars.com/api/?name=YL&background=f687b3&color=fff"
+  theme:
+    primaryColor: "#95EC69"
+  animation:
+    globalSpeed: 0.9
+    defaultDelay: medium
+
+messages:
+  # 思念的夜晚
+  - speaker: "晨风"
+    content: "还没睡吗？"
+    time: "23:45"
+
+  - speaker: "雨露"
+    content: "刚洗完澡"
+    time: "23:46"
+
+  - speaker: "雨露"
+    content: "你那边几点了？"
+    time: "23:46"
+    animationDelay: short
+
+  - speaker: "晨风"
+    content: "这里是早上11点"
+    time: "23:47"
+
+  - type: pause
+    duration: "2s"
+    description: "时差的无奈"
+
+  # 分享日常
+  - type: image
+    speaker: "晨风"
+    imageUrl: "https://via.placeholder.com/300x200/74b9ff/fff?text=NYC+Street"
+    imageDescription: "纽约的街道"
+    time: "23:48"
+
+  - speaker: "雨露"
+    content: "看起来天气不错"
+    time: "23:49"
+
+  - type: voice
+    speaker: "晨风"
+    voiceDuration: "12\""
+    voiceText: "是啊，但是没有你在身边，再好的风景也觉得少了什么"
+    time: "23:50"
+
+  # 雨露的思念
+  - type: typing
+    speaker: "雨露"
+    hesitate: true
+
+  - type: recall
+    speaker: "雨露"
+    originalMessage: "我好想你"
+    recallDelay: short
+    time: "23:52"
+
+  - speaker: "雨露"
+    content: "还有两个月你就回来了对吧"
+    time: "23:53"
+
+  - speaker: "晨风"
+    content: "嗯，63天"
+    time: "23:54"
+
+  - speaker: "晨风"
+    content: "我每天都在数"
+    time: "23:54"
+    animationDelay: short
+
+  # 视频通话前
+  - type: voice
+    speaker: "雨露"
+    voiceDuration: "8\""
+    voiceText: "要不要视频？我想看看你"
+    time: "23:55"
+
+  - speaker: "晨风"
+    content: "等我一下，我找个安静的地方"
+    time: "23:56"
+
+  - type: pause
+    duration: "3s"
+
+  - speaker: "晨风"
+    content: "可以了，打给你？"
+    time: "23:57"
+
+  - speaker: "雨露"
+    content: "嗯嗯"
+    time: "23:58"
+
+  # 通话后的甜蜜
+  - type: pause
+    duration: "5s"
+    description: "视频通话中..."
+
+  - speaker: "雨露"
+    content: "刚才看到你，感觉好开心"
+    time: "00:45"
+
+  - speaker: "晨风"
+    content: "你笑起来还是那么好看"
+    time: "00:46"
+
+  # 约定
+  - type: image
+    speaker: "雨露"
+    imageUrl: "https://via.placeholder.com/300x200/ffeaa7/333?text=Calendar"
+    imageDescription: "我在日历上标记了你回来的日子"
+    time: "00:47"
+
+  - speaker: "晨风"
+    content: "回来第一件事就是抱抱你"
+    time: "00:48"
+
+  - type: voice
+    speaker: "雨露"
+    voiceDuration: "6\""
+    voiceText: "说好了，不许食言"
+    time: "00:49"
+
+  # 互道晚安
+  - speaker: "晨风"
+    content: "你该睡了，已经很晚了"
+    time: "00:50"
+
+  - speaker: "雨露"
+    content: "不想睡，想多聊一会"
+    time: "00:51"
+
+  - type: typing
+    speaker: "晨风"
+
+  - speaker: "晨风"
+    content: "乖，早点休息"
+    time: "00:52"
+
+  - speaker: "晨风"
+    content: "明天还要上班呢"
+    time: "00:52"
+    animationDelay: short
+
+  - speaker: "雨露"
+    content: "好吧"
+    time: "00:53"
+
+  - type: voice
+    speaker: "雨露"
+    voiceDuration: "5\""
+    voiceText: "晚安，梦里见"
+    time: "00:54"
+
+  - speaker: "晨风"
+    content: "晚安宝贝，我爱你"
+    time: "00:55"
+
+  - type: image
+    speaker: "雨露"
+    imageUrl: "https://via.placeholder.com/150/ff6b9d/fff?text=💕"
+    time: "00:56"

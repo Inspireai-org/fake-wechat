@@ -1,0 +1,109 @@
+scene:
+  title: "表白时刻"
+  participants:
+    - name: "子轩"
+      avatar: "https://ui-avatars.com/api/?name=ZX&background=5856D6&color=fff"
+    - name: "诗雨"
+      avatar: "https://ui-avatars.com/api/?name=SY&background=FF2D55&color=fff"
+  animation:
+    globalSpeed: 1.0
+    defaultDelay: medium
+
+messages:
+  # 紧张的开场
+  - speaker: "子轩"
+    content: "在吗？"
+    time: "21:00"
+
+  - speaker: "诗雨"
+    content: "在呢，怎么了？"
+    time: "21:01"
+
+  - type: typing
+    speaker: "子轩"
+    hesitate: true
+
+  # 试探性铺垫
+  - speaker: "子轩"
+    content: "今天的月亮很美"
+    time: "21:02"
+
+  - type: pause
+    duration: "2s"
+    description: "诗雨看着窗外"
+
+  - type: image
+    speaker: "诗雨"
+    imageUrl: "https://via.placeholder.com/300x400/1a1a2e/eee?text=Moon"
+    imageDescription: "确实很美"
+    time: "21:03"
+
+  # 鼓起勇气
+  - type: typing
+    speaker: "子轩"
+    hesitate: true
+
+  - type: recall
+    speaker: "子轩"
+    originalMessage: "其实我想说的不是月亮"
+    recallDelay: short
+    time: "21:04"
+
+  - speaker: "子轩"
+    content: "诗雨，有件事想了很久"
+    time: "21:05"
+
+  # 语音表白
+  - type: voice
+    speaker: "子轩"
+    voiceDuration: "18\""
+    voiceText: "从第一次见面开始，我就被你吸引了。你的笑容，你的声音，都让我心动。我喜欢你，诗雨。"
+    time: "21:06"
+
+  - type: pause
+    duration: "5s"
+    description: "诗雨听完语音，心跳加速"
+
+  # 诗雨的反应
+  - type: typing
+    speaker: "诗雨"
+
+  - type: recall
+    speaker: "诗雨"
+    originalMessage: "我也是"
+    recallDelay: short
+    time: "21:08"
+
+  - type: typing
+    speaker: "诗雨"
+    hesitate: true
+
+  # 回应
+  - type: voice
+    speaker: "诗雨"
+    voiceDuration: "8\""
+    voiceText: "子轩...我也喜欢你很久了"
+    time: "21:09"
+
+  - speaker: "子轩"
+    content: "真的吗？！😊"
+    time: "21:10"
+
+  - speaker: "诗雨"
+    content: "真的，傻瓜"
+    time: "21:10"
+
+  # 约定
+  - speaker: "子轩"
+    content: "明天一起看电影吗？"
+    time: "21:11"
+
+  - speaker: "诗雨"
+    content: "好，你选电影"
+    time: "21:12"
+
+  - type: image
+    speaker: "子轩"
+    imageUrl: ["https://via.placeholder.com/150/FFE5B4/333?text=♥", "https://via.placeholder.com/150/FFE5B4/333?text=♥"]
+    imageDescription: "❤️"
+    time: "21:13"

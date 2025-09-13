@@ -1,0 +1,173 @@
+scene:
+  title: "十年后的重逢"
+  participants:
+    - name: "林昊"
+      avatar: "https://ui-avatars.com/api/?name=LH&background=2ecc71&color=fff"
+    - name: "安琪"
+      avatar: "https://ui-avatars.com/api/?name=AQ&background=9b59b6&color=fff"
+  animation:
+    globalSpeed: 0.9
+    defaultDelay: medium
+
+messages:
+  # 意外的消息
+  - speaker: "安琪"
+    content: "林昊？是你吗？"
+    time: "19:45"
+
+  - type: pause
+    duration: "3s"
+    description: "林昊看到名字，愣住了"
+
+  - speaker: "林昊"
+    content: "安琪？！真的是你？"
+    time: "19:46"
+
+  - speaker: "安琪"
+    content: "哈哈，是我"
+    time: "19:47"
+
+  - speaker: "安琪"
+    content: "看到你在同学群里发言了"
+    time: "19:47"
+    animationDelay: short
+
+  # 回忆涌现
+  - type: typing
+    speaker: "林昊"
+
+  - speaker: "林昊"
+    content: "天啊，多少年没联系了"
+    time: "19:48"
+
+  - speaker: "安琪"
+    content: "十年了吧"
+    time: "19:49"
+
+  - type: voice
+    speaker: "安琪"
+    voiceDuration: "10\""
+    voiceText: "从毕业后就再没见过，时间过得真快"
+    time: "19:50"
+
+  # 分享近况
+  - speaker: "林昊"
+    content: "你现在还在北京吗？"
+    time: "19:51"
+
+  - speaker: "安琪"
+    content: "回上海了，两年前回来的"
+    time: "19:52"
+
+  - speaker: "安琪"
+    content: "你呢？"
+    time: "19:52"
+    animationDelay: short
+
+  - speaker: "林昊"
+    content: "我也在上海！😮"
+    time: "19:53"
+
+  # 回忆大学
+  - type: pause
+    duration: "2s"
+
+  - type: image
+    speaker: "林昊"
+    imageUrl: "https://via.placeholder.com/300x200/3498db/fff?text=University+Gate"
+    imageDescription: "还记得学校的大门吗"
+    time: "19:54"
+
+  - speaker: "安琪"
+    content: "当然记得！"
+    time: "19:55"
+
+  - type: voice
+    speaker: "安琪"
+    voiceDuration: "12\""
+    voiceText: "我们经常在那里等着一起去图书馆，你总是迟到"
+    time: "19:56"
+
+  - speaker: "林昊"
+    content: "哈哈哈，被你记住了"
+    time: "19:57"
+
+  # 暗示过往感情
+  - type: typing
+    speaker: "林昊"
+    hesitate: true
+
+  - type: recall
+    speaker: "林昊"
+    originalMessage: "其实当年我一直想告诉你"
+    recallDelay: medium
+    time: "19:58"
+
+  - speaker: "林昊"
+    content: "那时候的日子真美好"
+    time: "19:59"
+
+  # 安琪的回应
+  - type: pause
+    duration: "3s"
+
+  - type: typing
+    speaker: "安琪"
+
+  - type: voice
+    speaker: "安琪"
+    voiceDuration: "8\""
+    voiceText: "是啊，那是最美好的时光"
+    time: "20:01"
+
+  # 试探性约见
+  - speaker: "林昊"
+    content: "既然都在上海..."
+    time: "20:02"
+
+  - speaker: "林昊"
+    content: "有空见个面吗？"
+    time: "20:03"
+
+  - type: typing
+    speaker: "安琪"
+
+  - speaker: "安琪"
+    content: "好啊！"
+    time: "20:04"
+
+  - speaker: "安琪"
+    content: "这周末怎么样？"
+    time: "20:04"
+    animationDelay: short
+
+  # 约定地点
+  - speaker: "林昊"
+    content: "太好了！"
+    time: "20:05"
+
+  - type: location
+    speaker: "林昊"
+    content: "这家咖啡店，周六下午3点？"
+    coordinates:
+      latitude: 31.2304
+      longitude: 121.4737
+    time: "20:06"
+
+  - speaker: "安琪"
+    content: "就这么定了"
+    time: "20:07"
+
+  # 期待的结尾
+  - type: image
+    speaker: "安琪"
+    imageUrl: ["https://via.placeholder.com/150/FFE5B4/333?text=☕", "https://via.placeholder.com/150/FFE5B4/333?text=😊"]
+    time: "20:08"
+
+  - speaker: "林昊"
+    content: "很期待"
+    time: "20:09"
+
+  - speaker: "安琪"
+    content: "我也是"
+    time: "20:10"

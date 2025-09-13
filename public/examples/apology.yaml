@@ -1,0 +1,149 @@
+scene:
+  title: "道歉与和解"
+  participants:
+    - name: "浩然"
+      avatar: "https://ui-avatars.com/api/?name=HR&background=f39c12&color=fff"
+    - name: "小薇"
+      avatar: "https://ui-avatars.com/api/?name=XW&background=e67e22&color=fff"
+  animation:
+    globalSpeed: 1.0
+    defaultDelay: medium
+
+messages:
+  # 小心试探
+  - speaker: "浩然"
+    content: "小薇"
+    time: "20:30"
+
+  - type: pause
+    duration: "5s"
+    description: "等待回复"
+
+  - speaker: "浩然"
+    content: "我知道你可能不想理我"
+    time: "20:32"
+
+  - type: pause
+    duration: "3s"
+
+  - speaker: "小薇"
+    content: "有事？"
+    time: "20:33"
+
+  # 真诚道歉
+  - type: typing
+    speaker: "浩然"
+    hesitate: true
+
+  - type: voice
+    speaker: "浩然"
+    voiceDuration: "25\""
+    voiceText: "小薇，我错了。那天不该对你发脾气，更不该说那些话。我知道工作压力不是借口，伤害了你是事实。对不起。"
+    time: "20:35"
+
+  - type: pause
+    duration: "4s"
+    description: "小薇在听语音"
+
+  # 解释但不是辩解
+  - speaker: "浩然"
+    content: "那天项目出了问题，我情绪失控了"
+    time: "20:36"
+
+  - speaker: "浩然"
+    content: "但这不是理由"
+    time: "20:36"
+    animationDelay: short
+
+  - speaker: "浩然"
+    content: "我不该把气撒在你身上"
+    time: "20:37"
+
+  # 小薇的反应
+  - type: typing
+    speaker: "小薇"
+
+  - speaker: "小薇"
+    content: "你知道你说的话有多伤人吗？"
+    time: "20:38"
+
+  - speaker: "浩然"
+    content: "我知道"
+    time: "20:39"
+
+  - type: voice
+    speaker: "浩然"
+    voiceDuration: "15\""
+    voiceText: "这几天我一直在后悔，想到你的感受就心疼。我真的很抱歉。"
+    time: "20:40"
+
+  # 展示改变
+  - type: image
+    speaker: "浩然"
+    imageUrl: "https://via.placeholder.com/300x400/2c3e50/fff?text=Anger+Management+Book"
+    imageDescription: "我在看情绪管理的书"
+    time: "20:41"
+
+  - speaker: "浩然"
+    content: "我不想再让这种事发生"
+    time: "20:42"
+
+  # 小薇软化
+  - type: pause
+    duration: "3s"
+
+  - type: typing
+    speaker: "小薇"
+    hesitate: true
+
+  - type: recall
+    speaker: "小薇"
+    originalMessage: "算了，我也有不对的地方"
+    recallDelay: short
+    time: "20:44"
+
+  - speaker: "小薇"
+    content: "你真的认识到错误了？"
+    time: "20:45"
+
+  - speaker: "浩然"
+    content: "是的，我保证不会再犯"
+    time: "20:46"
+
+  # 和解的迹象
+  - type: voice
+    speaker: "小薇"
+    voiceDuration: "10\""
+    voiceText: "浩然，我需要时间。但是...我接受你的道歉"
+    time: "20:47"
+
+  - speaker: "浩然"
+    content: "谢谢你，小薇"
+    time: "20:48"
+
+  - speaker: "浩然"
+    content: "我会用行动证明的"
+    time: "20:48"
+    animationDelay: short
+
+  # 温暖结尾
+  - type: pause
+    duration: "2s"
+
+  - speaker: "小薇"
+    content: "早点休息吧"
+    time: "20:50"
+
+  - speaker: "小薇"
+    content: "明天还要上班"
+    time: "20:50"
+    animationDelay: short
+
+  - speaker: "浩然"
+    content: "你也是，晚安"
+    time: "20:51"
+
+  - type: image
+    speaker: "小薇"
+    imageUrl: "https://via.placeholder.com/150/87CEEB/333?text=🌙"
+    time: "20:52"

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, Upload, Edit3 } from 'lucide-react';
+import { Plus, Trash2, Upload, Edit3, FileText, Heart, Users, MapPin, Phone, AlertCircle, Coffee } from 'lucide-react';
 import { ChatData, Participant, Message } from './ChatInterface';
 import { generateYamlConfig } from '../lib/yamlParser';
 
@@ -14,8 +14,89 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
   onChatDataChange,
   onYamlChange
 }) => {
-  const [activeTab, setActiveTab] = useState<'participants' | 'messages' | 'yaml'>('participants');
+  const [activeTab, setActiveTab] = useState<'examples' | 'participants' | 'messages' | 'yaml'>('examples');
   const [editingMessage, setEditingMessage] = useState<number | null>(null);
+
+  // 内置示例列表
+  const examples = [
+    { 
+      id: 'confession', 
+      name: '表白时刻', 
+      icon: Heart,
+      description: '紧张而甜蜜的表白过程',
+      file: 'examples/confession.yaml',
+      color: 'text-pink-500'
+    },
+    { 
+      id: 'breakup', 
+      name: '分手的夜晚', 
+      icon: AlertCircle,
+      description: '一段感情的结束',
+      file: 'examples/breakup.yaml',
+      color: 'text-gray-500'
+    },
+    { 
+      id: 'reunion', 
+      name: '十年后重逢', 
+      icon: Users,
+      description: '老同学意外重逢',
+      file: 'examples/reunion.yaml',
+      color: 'text-purple-500'
+    },
+    { 
+      id: 'apology', 
+      name: '道歉与和解', 
+      icon: FileText,
+      description: '真诚道歉寻求原谅',
+      file: 'examples/apology.yaml',
+      color: 'text-orange-500'
+    },
+    { 
+      id: 'daily-care', 
+      name: '日常关心', 
+      icon: Coffee,
+      description: '朋友间的日常关怀',
+      file: 'examples/daily-care.yaml',
+      color: 'text-blue-500'
+    },
+    { 
+      id: 'misunderstanding', 
+      name: '误会与澄清', 
+      icon: AlertCircle,
+      description: '因误会产生的小矛盾',
+      file: 'examples/misunderstanding.yaml',
+      color: 'text-yellow-500'
+    },
+    { 
+      id: 'long-distance', 
+      name: '异地恋', 
+      icon: MapPin,
+      description: '异地恋人的思念',
+      file: 'examples/long-distance.yaml',
+      color: 'text-indigo-500'
+    },
+    { 
+      id: 'story-demo', 
+      name: '许阳和小宁', 
+      icon: Phone,
+      description: '17年后的重逢故事',
+      file: 'story-demo.yaml',
+      color: 'text-green-500'
+    }
+  ];
+
+  // 加载示例
+  const loadExample = async (file: string) => {
+    try {
+      const response = await fetch(`/${file}`);
+      const yaml = await response.text();
+      onYamlChange(yaml);
+      // 切换到YAML标签页查看内容
+      setActiveTab('yaml');
+    } catch (error) {
+      console.error('Failed to load example:', error);
+    }
+  };
 
   // 更新场景标题
   const updateTitle = (title: string) => {
@@ -120,18 +201,19 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
   };
 
   return (
-    <div className="w-72 bg-white border-l border-gray-200 flex flex-col h-full">
+    <div className="w-80 bg-white border-l border-gray-200 flex flex-col h-full">
       {/* 标签页 */}
       <div className="flex border-b border-gray-200">
         {[
+          { key: 'examples', label: '示例' },
           { key: 'participants', label: '参与者' },
           { key: 'messages', label: '消息' },
           { key: 'yaml', label: 'YAML' }
         ].map(tab => (
           <button
             key={tab.key}
-            onClick={() => setActiveTab(tab.key as 'participants' | 'messages' | 'yaml')}
-            className={`flex-1 px-4 py-3 text-sm font-medium ${
+            onClick={() => setActiveTab(tab.key as 'examples' | 'participants' | 'messages' | 'yaml')}
+            className={`flex-1 px-3 py-3 text-sm font-medium ${
               activeTab === tab.key
                 ? 'text-[#07C160] border-b-2 border-[#07C160]'
                 : 'text-gray-500 hover:text-gray-700'
@@ -144,18 +226,56 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
 
       {/* 内容区域 */}
       <div className="flex-1 overflow-y-auto p-4 scrollbar-hide">
-        {/* 场景标题 */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            场景标题
-          </label>
-          <input
-            type="text"
-            value={chatData.scene.title}
-            onChange={(e) => updateTitle(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#07C160] focus:border-transparent"
-          />
-        </div>
+        {/* 示例标签页 */}
+        {activeTab === 'examples' && (
+          <div className="space-y-3">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">选择一个示例场景</h3>
+            {examples.map((example) => {
+              const Icon = example.icon;
+              return (
+                <button
+                  key={example.id}
+                  onClick={() => loadExample(example.file)}
+                  className="w-full text-left p-3 border border-gray-200 rounded-lg hover:border-[#07C160] hover:bg-green-50 transition-colors group"
+                >
+                  <div className="flex items-start space-x-3">
+                    <div className={`mt-0.5 ${example.color}`}>
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-medium text-gray-900 group-hover:text-[#07C160]">
+                        {example.name}
+                      </div>
+                      <div className="text-sm text-gray-500 mt-0.5">
+                        {example.description}
+                      </div>
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+            <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+              <p className="text-sm text-blue-700">
+                💡 提示：选择示例后会自动加载到YAML编辑器，你可以直接预览或修改后使用。
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* 场景标题 - 只在非示例页显示 */}
+        {activeTab !== 'examples' && (
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              场景标题
+            </label>
+            <input
+              type="text"
+              value={chatData.scene.title}
+              onChange={(e) => updateTitle(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#07C160] focus:border-transparent"
+            />
+          </div>
+        )}
 
         {/* 参与者标签页 */}
         {activeTab === 'participants' && (

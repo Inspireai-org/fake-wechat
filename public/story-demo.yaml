@@ -17,7 +17,6 @@ messages:
   - speaker: "许阳"
     content: "我是许阳，今天大头告诉我一些17年前的事"
     time: "21:30"
-    status: sent
 
   - type: pause
     duration: "2s"
@@ -26,7 +25,6 @@ messages:
   # 输入状态
   - type: typing
     speaker: "小宁"
-    statusDuration: long
     hesitate: true
 
   # 语音消息
@@ -54,8 +52,6 @@ messages:
   - speaker: "小宁"
     content: "还记得我们一起去看《哈利波特与魔法石》吗？"
     time: "21:36"
-    status: sent
-    statusDuration: short
 
   - speaker: "许阳"
     content: "记得，那是我第一次看电影"
@@ -70,7 +66,6 @@ messages:
 
   - type: typing
     speaker: "小宁"
-    statusDuration: medium
 
   - speaker: "小宁"
     content: "你还记得我当时穿的什么吗？"
@@ -91,17 +86,13 @@ messages:
   - speaker: "小宁"
     content: "许阳，如果时间能重来..."
     time: "21:42"
-    status: sending
-    statusDuration: medium
 
   - type: typing
     speaker: "许阳"
-    statusDuration: short
 
   - speaker: "许阳"
     content: "时间不能重来，但我们还有未来"
     time: "21:43"
-    status: sent
 
   # 感动时刻
   - type: voice
@@ -113,8 +104,6 @@ messages:
   - speaker: "许阳"
     content: "17年了，我也在等你"
     time: "21:45"
-    status: read
-    statusDuration: long
 
   # 结局
   - type: image
@@ -130,5 +119,3 @@ messages:
   - speaker: "小宁"
     content: "好，不见不散"
     time: "21:48"
-    status: read
-    statusDuration: short

@@ -1,0 +1,168 @@
+scene:
+  title: "日常关心"
+  participants:
+    - name: "阿杰"
+      avatar: "https://ui-avatars.com/api/?name=AJ&background=3498db&color=fff"
+    - name: "小月"
+      avatar: "https://ui-avatars.com/api/?name=XY&background=ff6b9d&color=fff"
+  animation:
+    globalSpeed: 1.2
+    defaultDelay: short
+
+messages:
+  # 早安问候
+  - speaker: "阿杰"
+    content: "早安呀"
+    time: "08:30"
+
+  - speaker: "阿杰"
+    content: "今天有重要的面试吧？"
+    time: "08:30"
+    animationDelay: short
+
+  - speaker: "小月"
+    content: "早！是的，好紧张"
+    time: "08:32"
+
+  # 鼓励支持
+  - type: voice
+    speaker: "阿杰"
+    voiceDuration: "8\""
+    voiceText: "别紧张，你一定可以的！相信自己"
+    time: "08:33"
+
+  - type: image
+    speaker: "阿杰"
+    imageUrl: "https://via.placeholder.com/200x200/ffeaa7/333?text=Fighting!"
+    imageDescription: "加油鸭！"
+    time: "08:34"
+
+  - speaker: "小月"
+    content: "谢谢你 🥺"
+    time: "08:35"
+
+  # 午间关心
+  - type: pause
+    duration: "2s"
+    description: "时间过去了几个小时"
+
+  - speaker: "阿杰"
+    content: "面试怎么样？"
+    time: "12:15"
+
+  - type: typing
+    speaker: "小月"
+
+  - speaker: "小月"
+    content: "刚结束！"
+    time: "12:16"
+
+  - type: voice
+    speaker: "小月"
+    voiceDuration: "12\""
+    voiceText: "感觉还不错！面试官很nice，问的问题我都准备到了"
+    time: "12:17"
+
+  - speaker: "阿杰"
+    content: "太棒了！👏"
+    time: "12:18"
+
+  - speaker: "阿杰"
+    content: "吃午饭了吗？"
+    time: "12:18"
+    animationDelay: short
+
+  # 分享日常
+  - speaker: "小月"
+    content: "还没，准备去吃"
+    time: "12:19"
+
+  - type: location
+    speaker: "小月"
+    content: "这家日料店"
+    coordinates:
+      latitude: 31.2165
+      longitude: 121.4489
+    time: "12:20"
+
+  - speaker: "阿杰"
+    content: "哇，看起来不错"
+    time: "12:21"
+
+  - type: image
+    speaker: "小月"
+    imageUrl: "https://via.placeholder.com/300x200/ff7675/fff?text=Sushi+Set"
+    imageDescription: "点了个套餐"
+    time: "12:25"
+
+  - speaker: "阿杰"
+    content: "看着就很好吃！"
+    time: "12:26"
+
+  # 晚间互动
+  - type: pause
+    duration: "2s"
+    description: "晚上"
+
+  - speaker: "小月"
+    content: "你下班了吗？"
+    time: "19:30"
+
+  - speaker: "阿杰"
+    content: "刚到家"
+    time: "19:31"
+
+  - type: image
+    speaker: "阿杰"
+    imageUrl: ["https://via.placeholder.com/150/74b9ff/fff?text=Cooking", "https://via.placeholder.com/150/a29bfe/fff?text=Dinner"]
+    imageDescription: "准备做晚饭"
+    time: "19:32"
+
+  - speaker: "小月"
+    content: "哇，会做饭的男生！"
+    time: "19:33"
+
+  - type: typing
+    speaker: "阿杰"
+
+  - speaker: "阿杰"
+    content: "哈哈，瞎做做"
+    time: "19:34"
+
+  - speaker: "阿杰"
+    content: "下次做给你吃？"
+    time: "19:34"
+    animationDelay: short
+
+  # 温馨结尾
+  - type: typing
+    speaker: "小月"
+    hesitate: true
+
+  - speaker: "小月"
+    content: "好呀！期待"
+    time: "19:35"
+
+  - type: voice
+    speaker: "小月"
+    voiceDuration: "5\""
+    voiceText: "谢谢你今天的鼓励"
+    time: "19:36"
+
+  - speaker: "阿杰"
+    content: "应该的，我们是朋友嘛"
+    time: "19:37"
+
+  - type: recall
+    speaker: "阿杰"
+    originalMessage: "其实想说的不只是朋友"
+    recallDelay: medium
+    time: "19:38"
+
+  - speaker: "阿杰"
+    content: "早点休息，等你的好消息"
+    time: "19:39"
+
+  - speaker: "小月"
+    content: "晚安～"
+    time: "19:40"

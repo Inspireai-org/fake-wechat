@@ -6,7 +6,6 @@ import { LocationMessage } from './LocationMessage';
 import { PauseIndicator } from './PauseIndicator';
 import { VoiceMessage } from './VoiceMessage';
 import { ImageMessage } from './ImageMessage';
-import { MessageStatus } from './MessageStatus';
 import { RecallMessage } from './RecallMessage';
 
 export interface Participant {
@@ -177,19 +176,11 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
             )}
             
             {/* 消息气泡 */}
-            <div className="flex items-center">
-              <MessageBubble
-                message={message}
-                participant={participant}
-                isCurrentUser={isCurrentUser}
-              />
-              {message.status && isCurrentUser && (
-                <MessageStatus
-                  status={message.status}
-                  duration={message.statusDuration || 'medium'}
-                />
-              )}
-            </div>
+            <MessageBubble
+              message={message}
+              participant={participant}
+              isCurrentUser={isCurrentUser}
+            />
           </div>
         );
       })}

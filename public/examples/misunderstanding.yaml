@@ -1,0 +1,178 @@
+scene:
+  title: "误会与澄清"
+  participants:
+    - name: "志明"
+      avatar: "https://ui-avatars.com/api/?name=ZM&background=16a085&color=fff"
+    - name: "春娇"
+      avatar: "https://ui-avatars.com/api/?name=CJ&background=c0392b&color=fff"
+  animation:
+    globalSpeed: 1.0
+    defaultDelay: medium
+
+messages:
+  # 冷战开始
+  - speaker: "春娇"
+    content: "看到你和她的合照了"
+    time: "22:10"
+
+  - type: pause
+    duration: "2s"
+
+  - speaker: "志明"
+    content: "什么合照？"
+    time: "22:11"
+
+  - type: image
+    speaker: "春娇"
+    imageUrl: "https://via.placeholder.com/300x200/95a5a6/fff?text=Photo"
+    imageDescription: "朋友圈看到的"
+    time: "22:12"
+
+  - speaker: "志明"
+    content: "这是公司聚餐啊"
+    time: "22:13"
+
+  # 误会加深
+  - speaker: "春娇"
+    content: "她靠你那么近"
+    time: "22:14"
+
+  - type: typing
+    speaker: "志明"
+
+  - speaker: "志明"
+    content: "只是拍照站在一起而已"
+    time: "22:15"
+
+  - type: voice
+    speaker: "春娇"
+    voiceDuration: "10\""
+    voiceText: "你都没告诉我有聚餐，还是她发朋友圈我才知道"
+    time: "22:16"
+
+  # 志明着急解释
+  - type: typing
+    speaker: "志明"
+    hesitate: true
+
+  - speaker: "志明"
+    content: "临时通知的聚餐"
+    time: "22:17"
+
+  - speaker: "志明"
+    content: "我想着很快就结束，就没说"
+    time: "22:17"
+    animationDelay: short
+
+  - type: recall
+    speaker: "志明"
+    originalMessage: "你是不是不相信我？"
+    recallDelay: short
+    time: "22:18"
+
+  # 拿出证据
+  - type: image
+    speaker: "志明"
+    imageUrl: ["https://via.placeholder.com/150/3498db/fff?text=Group1", "https://via.placeholder.com/150/2ecc71/fff?text=Group2", "https://via.placeholder.com/150/e74c3c/fff?text=Group3"]
+    imageDescription: "整个部门的合照，20多个人"
+    time: "22:19"
+
+  - speaker: "志明"
+    content: "你看，大家都在"
+    time: "22:20"
+
+  - type: voice
+    speaker: "志明"
+    voiceDuration: "18\""
+    voiceText: "春娇，我知道你在意什么。她只是新来的同事，大家一起拍照很正常。我心里只有你，你知道的。"
+    time: "22:21"
+
+  # 春娇开始软化
+  - type: pause
+    duration: "4s"
+
+  - type: typing
+    speaker: "春娇"
+    hesitate: true
+
+  - speaker: "春娇"
+    content: "那你为什么不告诉我"
+    time: "22:23"
+
+  - speaker: "志明"
+    content: "我错了"
+    time: "22:24"
+
+  - speaker: "志明"
+    content: "以后任何聚会都会告诉你"
+    time: "22:24"
+    animationDelay: short
+
+  # 和解的转机
+  - type: location
+    speaker: "志明"
+    content: "我现在就在你楼下"
+    coordinates:
+      latitude: 31.2243
+      longitude: 121.4856
+    time: "22:25"
+
+  - speaker: "春娇"
+    content: "什么？！"
+    time: "22:26"
+
+  - type: image
+    speaker: "志明"
+    imageUrl: "https://via.placeholder.com/300x400/f1c40f/333?text=Milk+Tea"
+    imageDescription: "买了你最爱的奶茶"
+    time: "22:27"
+
+  - type: voice
+    speaker: "志明"
+    voiceDuration: "8\""
+    voiceText: "下来吧，我想见你，当面说清楚"
+    time: "22:28"
+
+  # 春娇心软
+  - type: typing
+    speaker: "春娇"
+
+  - type: recall
+    speaker: "春娇"
+    originalMessage: "我才不要见你"
+    recallDelay: short
+    time: "22:29"
+
+  - speaker: "春娇"
+    content: "等我5分钟"
+    time: "22:30"
+
+  - speaker: "志明"
+    content: "我等你"
+    time: "22:31"
+
+  # 和好
+  - type: pause
+    duration: "3s"
+    description: "几分钟后"
+
+  - speaker: "春娇"
+    content: "看到你了"
+    time: "22:35"
+
+  - speaker: "志明"
+    content: "对不起，让你担心了"
+    time: "22:36"
+
+  - speaker: "春娇"
+    content: "下次不许这样了"
+    time: "22:37"
+
+  - speaker: "志明"
+    content: "保证不会了"
+    time: "22:38"
+
+  - type: image
+    speaker: "春娇"
+    imageUrl: "https://via.placeholder.com/200x200/ff6b9d/fff?text=❤"
+    time: "22:39"

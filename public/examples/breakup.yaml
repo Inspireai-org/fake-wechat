@@ -1,0 +1,124 @@
+scene:
+  title: "分手的夜晚"
+  participants:
+    - name: "晓峰"
+      avatar: "https://ui-avatars.com/api/?name=XF&background=34495e&color=fff"
+    - name: "梦瑶"
+      avatar: "https://ui-avatars.com/api/?name=MY&background=e74c3c&color=fff"
+  theme:
+    primaryColor: "#95EC69"
+    backgroundColor: "#F7F7F7"
+  animation:
+    globalSpeed: 0.8
+    defaultDelay: long
+
+messages:
+  # 冷淡的开始
+  - speaker: "梦瑶"
+    content: "我们需要谈谈"
+    time: "23:15"
+
+  - type: pause
+    duration: "4s"
+    description: "晓峰感到不安"
+
+  - speaker: "晓峰"
+    content: "怎么了？"
+    time: "23:17"
+
+  - type: typing
+    speaker: "梦瑶"
+    hesitate: true
+
+  # 问题暴露
+  - speaker: "梦瑶"
+    content: "你最近总是很忙"
+    time: "23:18"
+
+  - speaker: "梦瑶"
+    content: "我们已经一个月没见面了"
+    time: "23:18"
+    animationDelay: short
+
+  - speaker: "晓峰"
+    content: "工作真的很忙，你知道的"
+    time: "23:19"
+
+  # 情绪爆发
+  - type: voice
+    speaker: "梦瑶"
+    voiceDuration: "22\""
+    voiceText: "工作永远是第一位，对吗？我累了，晓峰。我不想再这样等待一个永远没时间的人了。"
+    time: "23:20"
+
+  - type: pause
+    duration: "3s"
+    description: "沉默"
+
+  # 试图挽回
+  - type: typing
+    speaker: "晓峰"
+
+  - speaker: "晓峰"
+    content: "对不起，我会改的"
+    time: "23:22"
+
+  - speaker: "晓峰"
+    content: "给我一次机会好吗？"
+    time: "23:22"
+    animationDelay: short
+
+  # 回忆
+  - type: image
+    speaker: "晓峰"
+    imageUrl: "https://via.placeholder.com/300x200/FFB6C1/333?text=Our+Memory"
+    imageDescription: "还记得这张照片吗？我们那时很开心"
+    time: "23:23"
+
+  - type: pause
+    duration: "5s"
+    description: "梦瑶看着照片"
+
+  # 撤回和犹豫
+  - type: typing
+    speaker: "梦瑶"
+
+  - type: recall
+    speaker: "梦瑶"
+    originalMessage: "也许我们可以再试试"
+    recallDelay: medium
+    time: "23:25"
+
+  # 最终决定
+  - type: voice
+    speaker: "梦瑶"
+    voiceDuration: "15\""
+    voiceText: "晓峰，我们都变了。也许分开对彼此都好。希望你能理解。"
+    time: "23:26"
+
+  - type: pause
+    duration: "4s"
+
+  - speaker: "晓峰"
+    content: "如果这是你的决定..."
+    time: "23:28"
+
+  - speaker: "晓峰"
+    content: "我尊重"
+    time: "23:29"
+
+  # 最后的告别
+  - speaker: "梦瑶"
+    content: "谢谢你"
+    time: "23:30"
+
+  - speaker: "梦瑶"
+    content: "照顾好自己"
+    time: "23:31"
+
+  - type: pause
+    duration: "3s"
+
+  - speaker: "晓峰"
+    content: "你也是"
+    time: "23:32"
