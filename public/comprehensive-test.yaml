@@ -1,0 +1,149 @@
+scene:
+  title: "综合功能测试"
+  participants:
+    - name: "我"
+      avatar: "https://picsum.photos/seed/me/200"
+    - name: "测试用户"
+      avatar: "https://picsum.photos/seed/tester/200"
+
+messages:
+  # 1. 测试消息状态
+  - speaker: "我"
+    content: "测试消息状态：sending"
+    time: "10:00"
+    status: "sending"
+    statusDuration: "short"
+  
+  - type: pause
+    duration: "1s"
+  
+  - speaker: "我"
+    content: "测试消息状态：sent"
+    time: "10:01"
+    status: "sent"
+    statusDuration: "medium"
+  
+  - speaker: "我"
+    content: "测试消息状态：read"
+    time: "10:02"
+    status: "read"
+    statusDuration: "short"
+  
+  # 2. 测试输入状态（导航栏显示）
+  - type: typing
+    speaker: "测试用户"
+    statusDuration: "medium"
+  
+  - speaker: "测试用户"
+    content: "这条消息前应该显示输入状态"
+    time: "10:03"
+  
+  # 3. 测试语音消息
+  - type: voice
+    speaker: "测试用户"
+    voiceDuration: "5""
+    voiceText: "这是语音转文字的内容"
+    time: "10:04"
+  
+  # 4. 测试图片消息
+  - type: image
+    speaker: "我"
+    imageUrl: "https://picsum.photos/seed/test1/200"
+    imageDescription: "单张图片测试"
+    time: "10:05"
+  
+  - type: image
+    speaker: "测试用户"
+    imageUrl: ["https://picsum.photos/seed/test2/200", "https://picsum.photos/seed/test3/200"]
+    imageDescription: "多张图片测试"
+    time: "10:06"
+  
+  # 5. 测试位置消息
+  - type: location
+    speaker: "我"
+    description: "测试位置"
+    coordinates:
+      latitude: 31.2304
+      longitude: 121.4737
+    time: "10:07"
+  
+  # 6. 测试消息撤回
+  - speaker: "我"
+    content: "这条消息将被撤回"
+    time: "10:08"
+  
+  - type: recall
+    speaker: "我"
+    originalMessage: "这条消息将被撤回"
+    recallDelay: "short"
+  
+  # 7. 测试连续撤回
+  - speaker: "测试用户"
+    content: "第一条要撤回的消息"
+    time: "10:09"
+  
+  - speaker: "测试用户"
+    content: "第二条要撤回的消息"
+    time: "10:09"
+  
+  - type: recall
+    speaker: "测试用户"
+    originalMessage: "第一条要撤回的消息"
+    recallDelay: "short"
+  
+  - type: recall
+    speaker: "测试用户"
+    originalMessage: "第二条要撤回的消息"
+    recallDelay: "short"
+  
+  # 8. 测试描述性时间
+  - type: pause
+    duration: "稍后"
+    description: "稍后（2秒）"
+  
+  - speaker: "我"
+    content: "测试动画延迟：短"
+    time: "10:10"
+    animationDelay: "短"
+  
+  - type: pause
+    duration: "片刻后"
+    description: "片刻后（3秒）"
+  
+  - speaker: "测试用户"
+    content: "测试动画延迟：中"
+    time: "10:11"
+    animationDelay: "中"
+  
+  - type: pause
+    duration: "很久之后"
+    description: "很久之后（会被优化到8秒）"
+  
+  - speaker: "我"
+    content: "测试动画延迟：长"
+    time: "10:15"
+    animationDelay: "长"
+  
+  # 9. 测试输入犹豫效果
+  - type: typing
+    speaker: "测试用户"
+    statusDuration: "long"
+  
+  - speaker: "测试用户"
+    content: "长时间输入后的消息"
+    time: "10:16"
+  
+  # 10. 测试具体时间值
+  - type: pause
+    duration: "2.5s"
+    description: "精确2.5秒延迟"
+  
+  - speaker: "我"
+    content: "测试具体时间值"
+    time: "10:17"
+    animationDelay: "1500"
+  
+  # 11. 最终消息
+  - speaker: "测试用户"
+    content: "✅ 所有功能测试完成！"
+    time: "10:20"

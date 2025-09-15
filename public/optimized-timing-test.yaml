@@ -1,0 +1,87 @@
+scene:
+  title: "优化后的动画节奏测试"
+  participants:
+    - name: "我"
+      avatar: "https://picsum.photos/seed/me/200"
+    - name: "助手"
+      avatar: "https://picsum.photos/seed/bot/200"
+
+messages:
+  # 无延迟指定，使用默认值（0.8秒）
+  - speaker: "我"
+    content: "你好！"
+    time: "10:00"
+  
+  # 短延迟（0.5秒）
+  - speaker: "助手"
+    content: "你好！有什么可以帮你的吗？"
+    time: "10:00"
+    animationDelay: "短"
+  
+  # 中延迟（1秒）
+  - speaker: "我"
+    content: "我想测试一下动画时序"
+    time: "10:01"
+    animationDelay: "中"
+  
+  # 长延迟（2秒）
+  - speaker: "助手"
+    content: "好的，让我展示各种功能"
+    time: "10:01"
+    animationDelay: "长"
+  
+  # 输入状态（短 = 0.5秒）
+  - type: typing
+    speaker: "助手"
+    statusDuration: "短"
+  
+  - speaker: "助手"
+    content: "首先是语音消息"
+    time: "10:02"
+  
+  # 语音消息
+  - type: voice
+    speaker: "助手"
+    voiceDuration: "2""
+    voiceText: "这是语音消息"
+    time: "10:02"
+  
+  # 暂停（稍后 = 1秒）
+  - type: pause
+    duration: "稍后"
+    description: "稍等片刻..."
+  
+  # 图片消息
+  - type: image
+    speaker: "我"
+    imageUrl: "https://picsum.photos/seed/test/200"
+    imageDescription: "测试图片"
+    time: "10:03"
+    animationDelay: "短"
+  
+  # 消息状态测试
+  - speaker: "我"
+    content: "发送带状态的消息"
+    time: "10:04"
+    status: "sending"
+    statusDuration: "短"
+  
+  # 撤回测试（短延迟 = 0.5秒）
+  - speaker: "助手"
+    content: "即将撤回"
+    time: "10:05"
+  
+  - type: recall
+    speaker: "助手"
+    originalMessage: "即将撤回"
+    recallDelay: "短"
+  
+  # 片刻后（1.5秒）
+  - type: pause
+    duration: "片刻后"
+    description: "等待片刻..."
+  
+  - speaker: "助手"
+    content: "✅ 动画节奏测试完成！"
+    time: "10:06"
+    animationDelay: "中"

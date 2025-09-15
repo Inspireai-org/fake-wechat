@@ -1,0 +1,66 @@
+scene:
+  title: "消息状态演示"
+  participants:
+    - name: "小明"
+      avatar: "https://picsum.photos/seed/xiaoming/200"
+    - name: "小红"
+      avatar: "https://picsum.photos/seed/xiaohong/200"
+
+messages:
+  # 展示消息发送状态
+  - speaker: "小明"
+    content: "你好！最近怎么样？"
+    time: "10:30"
+    status: "sending"
+    statusDuration: "short"
+  
+  - type: pause
+    duration: "1s"
+  
+  - speaker: "小明"
+    content: "有个事想和你商量一下"
+    time: "10:31"
+    status: "sending"
+    statusDuration: "medium"
+  
+  - type: typing
+    speaker: "小红"
+    statusDuration: "medium"
+  
+  - speaker: "小红"
+    content: "嗨！还不错，你说吧"
+    time: "10:32"
+  
+  - speaker: "小明"
+    content: "周末有时间吗？想约你看电影"
+    time: "10:33"
+    status: "sending"
+    statusDuration: "long"
+  
+  - type: pause
+    duration: "2s"
+    description: "等待回复..."
+  
+  - type: typing
+    speaker: "小红"
+    statusDuration: "long"
+  
+  - speaker: "小红"
+    content: "好啊！看什么电影？"
+    time: "10:35"
+  
+  - speaker: "小明"
+    content: "最新上映的那部科幻片怎么样？"
+    time: "10:36"
+    status: "sent"
+    statusDuration: "short"
+  
+  - speaker: "小红"
+    content: "听说不错！几点的场次？"
+    time: "10:37"
+  
+  - speaker: "小明"
+    content: "下午3点或者晚上7点都可以"
+    time: "10:38"
+    status: "read"
+    statusDuration: "medium"

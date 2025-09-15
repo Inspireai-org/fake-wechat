@@ -1,0 +1,64 @@
+scene:
+  title: "输入状态导航栏演示"
+  participants:
+    - name: "我"
+      avatar: "https://picsum.photos/seed/me/200"
+    - name: "李雷"
+      avatar: "https://picsum.photos/seed/lilei/200"
+
+messages:
+  - speaker: "我"
+    content: "在吗？有个事想问你"
+    time: "14:30"
+  
+  - type: pause
+    duration: "2s"
+    description: "等待回复..."
+  
+  # 对方开始输入，导航栏会显示"李雷正在输入..."
+  - type: typing
+    speaker: "李雷"
+    statusDuration: "long"
+  
+  - speaker: "李雷"
+    content: "在的，什么事？"
+    time: "14:32"
+  
+  - speaker: "我"
+    content: "周末的聚会你能来吗？"
+    time: "14:33"
+  
+  # 对方再次输入，带有犹豫效果
+  - type: typing
+    speaker: "李雷"
+    statusDuration: "long"
+  
+  - speaker: "李雷"
+    content: "让我看看时间安排..."
+    time: "14:35"
+  
+  - type: pause
+    duration: "3s"
+    description: "思考中..."
+  
+  # 长时间输入状态
+  - type: typing
+    speaker: "李雷"
+    statusDuration: "long"
+  
+  - speaker: "李雷"
+    content: "应该可以，几点开始？"
+    time: "14:36"
+  
+  - speaker: "我"
+    content: "下午6点，老地方"
+    time: "14:37"
+  
+  # 快速输入回复
+  - type: typing
+    speaker: "李雷"
+    statusDuration: "short"
+  
+  - speaker: "李雷"
+    content: "OK，到时见！"
+    time: "14:38"

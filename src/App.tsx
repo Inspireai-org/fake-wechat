@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ChatInterface, ChatData } from './components/ChatInterface';
 import { ConfigPanel } from './components/ConfigPanel';
 import { PlaybackControls } from './components/PlaybackControls';
-import { useAnimationControl } from './hooks/useAnimationControl';
+import { usePlaybackState } from './hooks/usePlaybackState';
 import { useGifExport } from './hooks/useGifExport';
 import { parseYamlConfig } from './lib/yamlParser';
 import WeChatNavBar from './components/WeChatNavBar';
@@ -35,8 +35,8 @@ function App() {
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
-  // 动画控制
-  const [animationState, animationControls] = useAnimationControl({
+  // 播放状态控制
+  const [playbackState, playbackControls] = usePlaybackState({
     messages: chatData.messages,
     onAnimationComplete: () => {
       console.log('Animation completed');
@@ -76,14 +76,33 @@ function App() {
     if (!container) return;
 
     const handleUpdateMessageIndex = (event: CustomEvent) => {
-      animationControls.goToMessage(event.detail);
+      playbackControls.seekToMessage(event.detail);
     };
 
     container.addEventListener('updateMessageIndex', handleUpdateMessageIndex as EventListener);
     return () => {
       container.removeEventListener('updateMessageIndex', handleUpdateMessageIndex as EventListener);
     };
-  }, [animationControls]);
+  }, [playbackControls]);
+
+  // 计算当前是否显示输入状态
+  const getCurrentTypingStatus = () => {
+    const currentMessage = chatData.messages[playbackState.currentMessageIndex];
+    if (currentMessage?.type === 'typing' && playbackState.isPlaying) {
+      const speaker = currentMessage.speaker;
+      const typingUser = chatData.scene.participants.find(p => p.name === speaker);
+      // 如果输入者不是当前用户（第一个参与者），显示输入状态
+      if (typingUser && typingUser.name !== chatData.scene.participants[0]?.name) {
+        return {
+          isTyping: true,
+          typingText: `${speaker}正在输入...`
+        };
+      }
+    }
+    return { isTyping: false, typingText: '' };
+  };
+
+  const typingStatus = getCurrentTypingStatus();
 
   // 加载默认YAML配置
   useEffect(() => {
@@ -110,12 +129,18 @@ function App() {
           <div ref={chatContainerRef} className="h-full w-full flex flex-col">
             <WeChatNavBar 
               contactName={chatData.scene.participants.find((p: { name: string }) => p.name !== chatData.scene.participants[0]?.name)?.name || '聊天'}
+              isTyping={typingStatus.isTyping}
+              typingText={typingStatus.typingText}
             />
             <div className="flex-1 overflow-hidden">
               <ChatInterface
                 chatData={chatData}
-                currentMessageIndex={animationState.currentMessageIndex}
-                isPlaying={animationState.isPlaying}
+                currentMessageIndex={playbackState.currentMessageIndex}
+                isPlaying={playbackState.isPlaying}
+                playMode={playbackState.playMode}
+                shouldAutoScroll={playbackState.shouldAutoScroll}
+                scrollPosition={playbackState.scrollPosition}
+                onScrollPositionChange={playbackControls.setScrollPosition}
               />
             </div>
           </div>
@@ -124,8 +149,9 @@ function App() {
         {/* 播放控制器 */}
         <div className="mt-3 w-full max-w-sm">
           <PlaybackControls
-            animationState={animationState}
-            animationControls={animationControls}
+            playbackState={playbackState}
+            playbackControls={playbackControls}
+            messages={chatData.messages}
             onExportGif={handleExportGif}
             isExporting={exportState.isExporting}
           />

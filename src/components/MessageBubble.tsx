@@ -1,5 +1,6 @@
 import React from 'react';
 import { Message, Participant } from './ChatInterface';
+import { MessageStatus } from './MessageStatus';
 
 interface MessageBubbleProps {
   message: Message;
@@ -16,6 +17,16 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
     // 当前用户的消息：消息靠右，头像在最右侧
     return (
       <div className="flex items-end justify-end space-x-2">
+        {/* 消息状态 - 显示在消息左侧 */}
+        {message.status && (
+          <div className="flex items-end">
+            <MessageStatus 
+              status={message.status} 
+              duration={message.statusDuration || 'short'}
+            />
+          </div>
+        )}
+        
         {/* 消息内容 */}
         <div className="bg-[#95EC69] text-black rounded-lg rounded-br-sm px-2.5 py-1.5 max-w-[180px]">
           <div className="text-sm leading-5 whitespace-pre-wrap">

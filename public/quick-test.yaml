@@ -1,0 +1,52 @@
+scene:
+  title: "快速功能验证"
+  participants:
+    - name: "我"
+      avatar: "https://picsum.photos/seed/user1/200"
+    - name: "小助手"
+      avatar: "https://picsum.photos/seed/assistant/200"
+
+messages:
+  - speaker: "我"
+    content: "测试开始！"
+    time: "12:00"
+    status: "sending"
+    statusDuration: "short"
+  
+  - type: typing
+    speaker: "小助手"
+    statusDuration: "short"
+  
+  - speaker: "小助手"
+    content: "收到！开始测试各项功能"
+    time: "12:01"
+  
+  - type: voice
+    speaker: "小助手"
+    voiceDuration: "3""
+    voiceText: "语音消息测试成功"
+    time: "12:02"
+  
+  - type: image
+    speaker: "我"
+    imageUrl: "https://picsum.photos/seed/test/200"
+    imageDescription: "图片测试"
+    time: "12:03"
+  
+  - speaker: "我"
+    content: "即将撤回这条消息"
+    time: "12:04"
+  
+  - type: recall
+    speaker: "我"
+    originalMessage: "即将撤回这条消息"
+    recallDelay: "short"
+  
+  - type: pause
+    duration: "稍后"
+    description: "等待2秒..."
+  
+  - speaker: "小助手"
+    content: "✅ 所有功能正常！"
+    time: "12:05"
+    animationDelay: "短"

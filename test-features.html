@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>功能测试清单</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #07C160;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #666;
+            margin-top: 30px;
+        }
+        .test-section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-item {
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 3px solid #07C160;
+            background: #f9f9f9;
+        }
+        .test-item h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        .test-steps {
+            margin-left: 20px;
+            color: #666;
+        }
+        .test-steps li {
+            margin: 5px 0;
+        }
+        .config-example {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+        }
+        .status {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status.pass { background: #d4edda; color: #155724; }
+        .status.fail { background: #f8d7da; color: #721c24; }
+        .status.pending { background: #fff3cd; color: #856404; }
+    </style>
+</head>
+<body>
+    <h1>微信对话动画生成器 - 功能测试清单</h1>
+    
+    <div class="test-section">
+        <h2>1. 消息状态显示测试</h2>
+        <div class="test-item">
+            <h3>测试文件：configs/message-status-example.yaml</h3>
+            <div class="test-steps">
+                <ol>
+                    <li>加载 message-status-example.yaml 配置</li>
+                    <li>点击播放按钮</li>
+                    <li>验证消息发送时显示转圈动画</li>
+                    <li>验证状态从 sending → sent → read 的转换</li>
+                    <li>检查不同 statusDuration（短/中/长）的效果</li>
+                </ol>
+            </div>
+            <span class="status pending">待测试</span>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. 导航栏输入状态测试</h2>
+        <div class="test-item">
+            <h3>测试文件：configs/typing-navbar-example.yaml</h3>
+            <div class="test-steps">
+                <ol>
+                    <li>加载 typing-navbar-example.yaml 配置</li>
+                    <li>播放动画</li>
+                    <li>验证当 typing 类型消息出现时，导航栏显示"李雷正在输入..."</li>
+                    <li>验证输入状态消失后导航栏恢复正常</li>
+                    <li>检查不同持续时间的输入状态</li>
+                </ol>
+            </div>
+            <span class="status pending">待测试</span>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. 消息撤回动画测试</h2>
+        <div class="test-item">
+            <h3>测试文件：configs/recall-animation-example.yaml</h3>
+            <div class="test-steps">
+                <ol>
+                    <li>加载 recall-animation-example.yaml 配置</li>
+                    <li>播放动画</li>
+                    <li>验证消息先显示，然后淡出消失</li>
+                    <li>验证撤回后显示"xxx撤回了一条消息"</li>
+                    <li>测试连续撤回多条消息的动画效果</li>
+                    <li>验证不同 recallDelay（短/中/长）的时序</li>
+                </ol>
+            </div>
+            <span class="status pending">待测试</span>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>4. 动画节奏控制测试</h2>
+        <div class="test-item">
+            <h3>测试文件：configs/animation-rhythm-example.yaml</h3>
+            <div class="test-steps">
+                <ol>
+                    <li>加载 animation-rhythm-example.yaml 配置</li>
+                    <li>播放动画</li>
+                    <li>验证描述性时间："稍后"、"片刻后"、"很久之后"等</li>
+                    <li>验证具体时间值："2s"、"1.5秒"等</li>
+                    <li>检查过长延迟是否被自动优化</li>
+                    <li>测试播放速度控制（0.5x-5x）</li>
+                </ol>
+            </div>
+            <span class="status pending">待测试</span>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>5. 场景模板系统测试</h2>
+        <div class="test-item">
+            <h3>测试场景模板选择</h3>
+            <div class="test-steps">
+                <ol>
+                    <li>打开配置面板的"示例"标签</li>
+                    <li>测试分类过滤：全部、情感、节日、工作、友情</li>
+                    <li>选择"表白场景"模板</li>
+                    <li>验证模板内容自动加载到编辑器</li>
+                    <li>测试其他模板：分手场景、道歉场景、生日祝福等</li>
+                    <li>验证模板的动画配置正确应用</li>
+                </ol>
+            </div>
+            <span class="status pending">待测试</span>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>6. 语音消息测试</h2>
+        <div class="test-item">
+            <h3>测试语音消息显示</h3>
+            <div class="test-steps">
+                <ol>
+                    <li>创建包含语音消息的配置</li>
+                    <li>验证绿色语音条显示</li>
+                    <li>验证时长显示（如"10""）</li>
+                    <li>验证语音转文字渐显效果</li>
+                    <li>检查未播放红点提示</li>
+                </ol>
+            </div>
+            <div class="config-example">- type: voice
+  speaker: "小明"
+  voiceDuration: "8""
+  voiceText: "这是语音转文字的内容"
+  time: "10:30"</div>
+            <span class="status pending">待测试</span>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>7. 图片消息测试</h2>
+        <div class="test-item">
+            <h3>测试图片消息显示</h3>
+            <div class="test-steps">
+                <ol>
+                    <li>创建包含单图和多图的配置</li>
+                    <li>验证图片缩略图显示</li>
+                    <li>验证图片加载动画</li>
+                    <li>测试多图拼接布局</li>
+                    <li>验证图片描述文字</li>
+                </ol>
+            </div>
+            <div class="config-example">- type: image
+  speaker: "小红"
+  imageUrl: ["https://picsum.photos/200", "https://picsum.photos/201"]
+  imageDescription: "今天的风景"
+  time: "14:20"</div>
+            <span class="status pending">待测试</span>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>8. 整体功能测试</h2>
+        <div class="test-item">
+            <h3>综合测试</h3>
+            <div class="test-steps">
+                <ol>
+                    <li>测试播放/暂停/重置功能</li>
+                    <li>测试进度条拖动</li>
+                    <li>测试GIF导出功能</li>
+                    <li>测试YAML编辑实时预览</li>
+                    <li>测试不同播放速度</li>
+                    <li>验证所有动画过渡平滑</li>
+                    <li>检查内存使用和性能</li>
+                </ol>
+            </div>
+            <span class="status pending">待测试</span>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>测试结果汇总</h2>
+        <p>测试时间：<span id="test-time"></span></p>
+        <p>总测试项：8</p>
+        <p>通过：<span id="pass-count">0</span></p>
+        <p>失败：<span id="fail-count">0</span></p>
+        <p>待测：<span id="pending-count">8</span></p>
+    </div>
+
+    <script>
+        document.getElementById('test-time').textContent = new Date().toLocaleString('zh-CN');
+    </script>
+</body>
+</html>

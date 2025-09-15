@@ -1,0 +1,102 @@
+scene:
+  title: "撤回动画演示"
+  participants:
+    - name: "我"
+      avatar: "https://picsum.photos/seed/me/200"
+    - name: "韩梅梅"
+      avatar: "https://picsum.photos/seed/hanmeimei/200"
+
+messages:
+  - speaker: "我"
+    content: "今天天气不错啊"
+    time: "09:30"
+  
+  - speaker: "韩梅梅"
+    content: "是啊，阳光很好"
+    time: "09:31"
+  
+  # 发送后快速撤回
+  - speaker: "我"
+    content: "要不要一起去看电影？"
+    time: "09:32"
+  
+  - type: recall
+    originalMessage:
+      speaker: "我"
+      content: "要不要一起去看电影？"
+    recallDelay: "short"
+    showReEdit: true
+  
+  - type: pause
+    duration: "2s"
+    description: "重新组织语言..."
+  
+  # 连续发送多条消息
+  - speaker: "我"
+    content: "周末有什么安排吗？"
+    time: "09:33"
+  
+  - speaker: "我"
+    content: "听说新开了一家不错的餐厅"
+    time: "09:33"
+  
+  - speaker: "我"
+    content: "要不要一起去试试？"
+    time: "09:34"
+  
+  # 连续撤回多条消息（展示错开动画效果）
+  - type: recall
+    originalMessage:
+      speaker: "我"
+      content: "听说新开了一家不错的餐厅"
+    recallDelay: "short"
+  
+  - type: recall
+    originalMessage:
+      speaker: "我"
+      content: "要不要一起去试试？"
+    recallDelay: "short"
+  
+  - type: pause
+    duration: "3s"
+    description: "犹豫中..."
+  
+  # 对方发送消息后撤回
+  - speaker: "韩梅梅"
+    content: "好啊，什么时候？"
+    time: "09:35"
+  
+  - speaker: "韩梅梅"
+    content: "等等，我好像那天有事..."
+    time: "09:36"
+  
+  # 对方撤回消息
+  - type: recall
+    originalMessage:
+      speaker: "韩梅梅"
+      content: "等等，我好像那天有事..."
+    recallDelay: "medium"
+  
+  - type: typing
+    speaker: "韩梅梅"
+    statusDuration: "medium"
+  
+  - speaker: "韩梅梅"
+    content: "让我确认一下时间再回复你"
+    time: "09:37"
+  
+  # 长时间后撤回
+  - speaker: "我"
+    content: "没问题，不着急"
+    time: "09:38"
+  
+  - speaker: "我"
+    content: "其实我也不是很确定时间"
+    time: "09:39"
+  
+  - type: recall
+    originalMessage:
+      speaker: "我"
+      content: "其实我也不是很确定时间"
+    recallDelay: "long"
+    showReEdit: false

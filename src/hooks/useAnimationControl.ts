@@ -43,38 +43,104 @@ export function useAnimationControl({
     }
   }, []);
 
+  // 解析描述性时间
+  const parseDescriptiveTime = (duration: string | undefined): number => {
+    if (!duration) return 800;
+    
+    // 支持的描述性时间映射（与 usePlaybackState 保持一致）
+    const descriptiveTimeMap: Record<string, number> = {
+      '稍后': 1000,
+      '片刻后': 1500,
+      '一会儿后': 2000,
+      '很久之后': 3000,
+      '许久之后': 4000,
+      '短': 500,
+      'short': 500,
+      '中': 1000,
+      'medium': 1000,
+      '长': 2000,
+      'long': 2000,
+    };
+    
+    // 首先检查是否是描述性时间
+    const normalizedDuration = duration.toLowerCase().replace(/\s+/g, '');
+    if (descriptiveTimeMap[normalizedDuration]) {
+      return descriptiveTimeMap[normalizedDuration];
+    }
+    
+    // 解析具体时间值（如 "2秒", "3s", "1分钟" 等）
+    const match = duration.match(/(\d+\.?\d*)\s*(秒|s|sec|second|分钟|m|min|minute|小时|h|hour)?/i);
+    if (match) {
+      const value = parseFloat(match[1]);
+      const unit = match[2] || 's';
+      
+      switch (unit.toLowerCase()) {
+        case '秒':
+        case 's':
+        case 'sec':
+        case 'second':
+          return value * 1000;
+        case '分钟':
+        case 'm':
+        case 'min':
+        case 'minute':
+          return value * 60 * 1000;
+        case '小时':
+        case 'h':
+        case 'hour':
+          return value * 60 * 60 * 1000;
+        default:
+          return value * 1000; // 默认为秒
+      }
+    }
+    
+    return 1500; // 默认延迟
+  };
+
+  // 优化过长的等待时间
+  const optimizeDelay = (delay: number): number => {
+    const MAX_COMFORTABLE_DELAY = 8000; // 最大舒适等待时间8秒
+    const MIN_DELAY = 500; // 最小延迟0.5秒
+    
+    if (delay > MAX_COMFORTABLE_DELAY) {
+      // 对超长延迟进行对数压缩
+      return Math.min(MAX_COMFORTABLE_DELAY, Math.log(delay / 1000) * 2000 + 3000);
+    }
+    
+    return Math.max(MIN_DELAY, delay);
+  };
+
   // 计算消息显示延迟
   const getMessageDelay = useCallback((message: Message): number => {
-    const baseDelay = 1500; // 基础延迟1.5秒
+    let delay: number;
     
     if (message.type === 'pause') {
       // 解析暂停时间
-      const duration = message.duration || '1秒';
-      const match = duration.match(/(\d+)(秒|分钟|小时)/);
-      if (match) {
-        const value = parseInt(match[1]);
-        const unit = match[2];
-        switch (unit) {
-          case '秒': return value * 1000;
-          case '分钟': return value * 60 * 1000;
-          case '小时': return value * 60 * 60 * 1000;
-          default: return baseDelay;
-        }
-      }
-      return baseDelay;
+      delay = parseDescriptiveTime(message.duration);
     } else if (message.type === 'typing') {
-      // 解析打字时间
-      const duration = message.duration || '3秒';
-      const match = duration.match(/(\d+)秒/);
-      if (match) {
-        return parseInt(match[1]) * 1000;
+      // 输入状态延迟
+      if (message.statusDuration) {
+        delay = parseDescriptiveTime(message.statusDuration);
+      } else {
+        delay = parseDescriptiveTime(message.duration || '3s');
       }
-      return 3000; // 默认3秒
+    } else if (message.type === 'recall') {
+      // 撤回延迟
+      delay = parseDescriptiveTime(message.recallDelay);
     } else {
-      // 普通消息根据内容长度调整延迟
-      const contentLength = message.content?.length || 0;
-      return Math.max(baseDelay, contentLength * 100);
+      // 普通消息延迟
+      if (message.animationDelay) {
+        delay = parseDescriptiveTime(message.animationDelay);
+      } else {
+        // 根据内容长度自动调整
+        const contentLength = message.content?.length || 0;
+        const baseDelay = 1500;
+        delay = Math.max(baseDelay, Math.min(contentLength * 50, 3000));
+      }
     }
+    
+    // 应用延迟优化
+    return optimizeDelay(delay);
   }, []);
 
   // 播放下一条消息

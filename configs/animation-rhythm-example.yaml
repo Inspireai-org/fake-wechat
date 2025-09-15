@@ -1,0 +1,109 @@
+scene:
+  title: "动画节奏演示"
+  participants:
+    - name: "我"
+      avatar: "https://picsum.photos/seed/me/200"
+    - name: "王芳"
+      avatar: "https://picsum.photos/seed/wangfang/200"
+
+messages:
+  - speaker: "我"
+    content: "早上好！"
+    time: "08:00"
+    animationDelay: "短"
+  
+  - speaker: "王芳"
+    content: "早！今天有什么安排吗？"
+    time: "08:01"
+    animationDelay: "short"
+  
+  - type: pause
+    duration: "稍后"
+    description: "思考中..."
+  
+  - speaker: "我"
+    content: "上午要开个会"
+    time: "08:02"
+    animationDelay: "中"
+  
+  - type: typing
+    speaker: "王芳"
+    statusDuration: "短"
+  
+  - speaker: "王芳"
+    content: "几点的会议？"
+    time: "08:03"
+  
+  - type: pause
+    duration: "片刻后"
+    description: "查看日程..."
+  
+  - speaker: "我"
+    content: "十点钟，在三楼会议室"
+    time: "08:05"
+    animationDelay: "medium"
+  
+  - type: typing
+    speaker: "王芳"
+    statusDuration: "中"
+  
+  - speaker: "王芳"
+    content: "好的，我也要参加"
+    time: "08:06"
+  
+  - type: pause
+    duration: "一会儿后"
+    description: "继续工作..."
+  
+  - speaker: "我"
+    content: "那一起去吧"
+    time: "08:10"
+    animationDelay: "长"
+  
+  - type: typing
+    speaker: "王芳"
+    statusDuration: "long"
+  
+  - speaker: "王芳"
+    content: "嗯，到时候一起走"
+    time: "08:11"
+  
+  # 测试很久之后（会被自动优化）
+  - type: pause
+    duration: "很久之后"
+    description: "一小时后..."
+  
+  - speaker: "我"
+    content: "快到时间了，准备出发吗？"
+    time: "09:50"
+  
+  - type: typing
+    speaker: "王芳"
+    statusDuration: "短"
+  
+  - speaker: "王芳"
+    content: "马上就好，等我两分钟"
+    time: "09:51"
+  
+  # 测试具体时间值
+  - type: pause
+    duration: "2s"
+  
+  - speaker: "我"
+    content: "好的，我在电梯口等你"
+    time: "09:52"
+    animationDelay: "1.5秒"
+  
+  # 测试许久之后（也会被优化）
+  - type: pause
+    duration: "许久之后"
+    description: "会议结束后..."
+  
+  - speaker: "王芳"
+    content: "会议内容很有收获"
+    time: "11:30"
+  
+  - speaker: "我"
+    content: "是啊，学到了不少东西"
+    time: "11:31"
+    animationDelay: "2秒"

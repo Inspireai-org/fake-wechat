@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Plus, Trash2, Upload, Edit3, FileText, Heart, Users, MapPin, Phone, AlertCircle, Coffee } from 'lucide-react';
 import { ChatData, Participant, Message } from './ChatInterface';
 import { generateYamlConfig } from '../lib/yamlParser';
+import { getAllTemplates, getTemplatesByCategory, getAllCategories, applyTemplate, SceneTemplate } from '../lib/sceneTemplates';
 
 interface ConfigPanelProps {
   chatData: ChatData;
@@ -16,6 +17,7 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<'examples' | 'participants' | 'messages' | 'yaml'>('examples');
   const [editingMessage, setEditingMessage] = useState<number | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>('全部');
 
   // 内置示例列表
   const examples = [
@@ -97,6 +99,29 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
       console.error('Failed to load example:', error);
     }
   };
+
+  // 加载模板
+  const loadTemplate = (template: SceneTemplate) => {
+    const templateData = applyTemplate(template.id);
+    if (templateData) {
+      onChatDataChange(templateData);
+      const yaml = generateYamlConfig(templateData);
+      onYamlChange(yaml);
+      // 切换到YAML标签页查看内容
+      setActiveTab('yaml');
+    }
+  };
+
+  // 获取分类后的模板
+  const getFilteredTemplates = () => {
+    if (selectedCategory === '全部') {
+      return getAllTemplates();
+    }
+    return getTemplatesByCategory(selectedCategory);
+  };
+
+  const categories = ['全部', ...getAllCategories()];
+  const templates = getFilteredTemplates();
 
   // 更新场景标题
   const updateTitle = (title: string) => {
@@ -229,34 +254,81 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
         {/* 示例标签页 */}
         {activeTab === 'examples' && (
           <div className="space-y-3">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">选择一个示例场景</h3>
-            {examples.map((example) => {
-              const Icon = example.icon;
-              return (
+            <div className="mb-4">
+              <h3 className="text-lg font-medium text-gray-900 mb-3">选择场景模板</h3>
+              
+              {/* 分类过滤器 */}
+              <div className="flex flex-wrap gap-2 mb-4">
+                {categories.map(category => (
+                  <button
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-3 py-1 text-sm rounded-full transition-colors ${
+                      selectedCategory === category
+                        ? 'bg-[#07C160] text-white'
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    }`}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* 模板列表 */}
+            <div className="space-y-2">
+              {templates.map((template) => (
                 <button
-                  key={example.id}
-                  onClick={() => loadExample(example.file)}
+                  key={template.id}
+                  onClick={() => loadTemplate(template)}
                   className="w-full text-left p-3 border border-gray-200 rounded-lg hover:border-[#07C160] hover:bg-green-50 transition-colors group"
                 >
                   <div className="flex items-start space-x-3">
-                    <div className={`mt-0.5 ${example.color}`}>
-                      <Icon className="w-5 h-5" />
-                    </div>
                     <div className="flex-1">
                       <div className="font-medium text-gray-900 group-hover:text-[#07C160]">
-                        {example.name}
+                        {template.name}
                       </div>
                       <div className="text-sm text-gray-500 mt-0.5">
-                        {example.description}
+                        {template.description}
+                      </div>
+                      <div className="text-xs text-gray-400 mt-1">
+                        分类：{template.category}
                       </div>
                     </div>
                   </div>
                 </button>
-              );
-            })}
+              ))}
+            </div>
+
+            {/* 经典示例 */}
+            <div className="mt-6 pt-6 border-t border-gray-200">
+              <h4 className="text-sm font-medium text-gray-700 mb-3">经典示例文件</h4>
+              <div className="space-y-2">
+                {examples.map((example) => {
+                  const Icon = example.icon;
+                  return (
+                    <button
+                      key={example.id}
+                      onClick={() => loadExample(example.file)}
+                      className="w-full text-left p-2 text-sm border border-gray-200 rounded hover:border-[#07C160] hover:bg-green-50 transition-colors group"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <div className={`${example.color}`}>
+                          <Icon className="w-4 h-4" />
+                        </div>
+                        <span className="text-gray-700 group-hover:text-[#07C160]">
+                          {example.name}
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
             <div className="mt-4 p-3 bg-blue-50 rounded-lg">
               <p className="text-sm text-blue-700">
-                💡 提示：选择示例后会自动加载到YAML编辑器，你可以直接预览或修改后使用。
+                💡 提示：选择模板后会自动加载到编辑器，你可以修改参与者名称、头像和消息内容。
               </p>
             </div>
           </div>

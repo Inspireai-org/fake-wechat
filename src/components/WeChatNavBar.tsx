@@ -3,12 +3,16 @@ import { ChevronLeft, MoreHorizontal } from 'lucide-react';
 
 interface WeChatNavBarProps {
   contactName: string;
+  isTyping?: boolean;
+  typingText?: string;
   onBack?: () => void;
   onMore?: () => void;
 }
 
 const WeChatNavBar: React.FC<WeChatNavBarProps> = ({ 
-  contactName, 
+  contactName,
+  isTyping = false,
+  typingText = "对方正在输入...",
   onBack, 
   onMore 
 }) => {
@@ -22,11 +26,16 @@ const WeChatNavBar: React.FC<WeChatNavBarProps> = ({
         <ChevronLeft className="w-5 h-5 text-black" strokeWidth={2} />
       </button>
       
-      {/* 联系人姓名 */}
+      {/* 联系人姓名和输入状态 */}
       <div className="flex-1 text-center">
         <h1 className="text-black font-medium text-sm leading-tight">
           {contactName}
         </h1>
+        {isTyping && (
+          <p className="text-xs text-gray-500 mt-0.5 animate-pulse">
+            {typingText}
+          </p>
+        )}
       </div>
       
       {/* 更多按钮 */}
