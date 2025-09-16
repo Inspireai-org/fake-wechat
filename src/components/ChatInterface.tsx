@@ -126,8 +126,9 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   // 播放模式下的自动滚动效果
   useEffect(() => {
-    if (shouldAutoScroll && isPlaying && playMode !== 'preview') {
+    if (shouldAutoScroll && playMode !== 'preview') {
       // 播放模式下，滚动到最新消息
+      // 不论是否正在播放，只要有新消息显示就应该滚动
       if (lastMessageRef.current) {
         scrollControls.scrollToElement(lastMessageRef.current, {
           behavior: 'smooth',
@@ -136,7 +137,29 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
         });
       }
     }
-  }, [currentMessageIndex, isPlaying, shouldAutoScroll, playMode, scrollControls]);
+  }, [currentMessageIndex, shouldAutoScroll, playMode, scrollControls]);
+
+  // 播放完成后确保滚动到底部
+  useEffect(() => {
+    if (!isPlaying && shouldAutoScroll && playMode !== 'preview' && currentMessageIndex >= 0) {
+      // 播放停止后，如果有消息显示，确保滚动到最底部
+      setTimeout(() => {
+        if (lastMessageRef.current) {
+          scrollControls.scrollToElement(lastMessageRef.current, {
+            behavior: 'smooth',
+            block: 'end',
+            duration: 300
+          });
+        } else {
+          // 如果没有 lastMessageRef，直接滚动到底部
+          scrollControls.scrollToBottom({
+            behavior: 'smooth',
+            duration: 300
+          });
+        }
+      }, 100); // 小延迟确保 DOM 更新完成
+    }
+  }, [isPlaying, shouldAutoScroll, playMode, currentMessageIndex, scrollControls]);
 
   // 预览模式下的滚动位置同步
   useEffect(() => {
