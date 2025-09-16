@@ -333,7 +333,7 @@ const TimelineExportDialog: React.FC<{
             </label>
             <select
               value={config.format}
-              onChange={(e) => setConfig(prev => ({ ...prev, format: e.target.value as unknown }))}
+              onChange={(e) => setConfig(prev => ({ ...prev, format: e.target.value as 'json' | 'yaml' | 'csv' }))}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="json">JSON</option>
