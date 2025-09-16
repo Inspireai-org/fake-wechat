@@ -127,14 +127,17 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   // 播放模式下的自动滚动效果
   useEffect(() => {
     if (shouldAutoScroll && playMode !== 'preview') {
-      // 播放模式下，滚动到最新消息
-      // 不论是否正在播放，只要有新消息显示就应该滚动
+      // 播放模式下，滚动到最新消息，确保底部有6px间距
       if (lastMessageRef.current) {
-        scrollControls.scrollToElement(lastMessageRef.current, {
-          behavior: 'smooth',
-          block: 'end',
-          duration: 250
-        });
+        const container = messagesContainerRef.current;
+        if (container) {
+          // 计算滚动位置，确保最新消息底部距离输入框6px
+          const targetScrollTop = container.scrollHeight - container.clientHeight;
+          scrollControls.scrollTo(targetScrollTop, {
+            behavior: 'smooth',
+            duration: 250
+          });
+        }
       }
     }
   }, [currentMessageIndex, shouldAutoScroll, playMode, scrollControls]);
@@ -145,11 +148,22 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       // 播放停止后，如果有消息显示，确保滚动到最底部
       setTimeout(() => {
         if (lastMessageRef.current) {
-          scrollControls.scrollToElement(lastMessageRef.current, {
-            behavior: 'smooth',
-            block: 'end',
-            duration: 300
-          });
+          // 滚动到最后一条消息，确保底部有6px空间
+          const container = messagesContainerRef.current;
+          if (container) {
+            const messageElement = lastMessageRef.current;
+            const containerHeight = container.clientHeight;
+            const messageRect = messageElement.getBoundingClientRect();
+            const containerRect = container.getBoundingClientRect();
+            
+            // 计算需要滚动的位置，确保消息底部距离容器底部6px
+            const targetScrollTop = container.scrollHeight - containerHeight;
+            
+            scrollControls.scrollTo(targetScrollTop, {
+              behavior: 'smooth',
+              duration: 300
+            });
+          }
         } else {
           // 如果没有 lastMessageRef，直接滚动到底部
           scrollControls.scrollToBottom({
@@ -183,8 +197,9 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       {/* 聊天消息区域 */}
       <div 
         ref={messagesContainerRef}
-        className="flex-1 overflow-y-auto px-2 py-2 space-y-2 text-sm scrollbar-hide"
+        className="flex-1 overflow-y-auto px-2 pt-2 pb-1.5 space-y-2 text-sm scrollbar-hide"
         onScroll={handleScroll}
+        style={{ paddingBottom: '6px' }}
       >
       {visibleMessages.map((message, index) => {
         const participant = message.speaker ? getParticipant(message.speaker) : null;
