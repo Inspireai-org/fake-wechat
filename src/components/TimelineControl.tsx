@@ -12,6 +12,14 @@ export interface Keyframe {
   color: string;
 }
 
+// 时间轴编辑配置接口
+export interface TimelineEditConfig {
+  format: 'json' | 'yaml' | 'csv';
+  includeMetadata: boolean;
+  includeTimestamps: boolean;
+  includeKeyframes: boolean;
+}
+
 // 时间轴控制器属性接口
 export interface TimelineControlProps {
   // 基础属性
@@ -27,12 +35,22 @@ export interface TimelineControlProps {
   onDragStart?: () => void;
   onDragEnd?: () => void;
   
+  // 编辑功能回调
+  onKeyframeDrag?: (keyframeId: string, newTime: number) => void;
+  onKeyframeDurationChange?: (keyframeId: string, newDuration: number) => void;
+  onTimelineExport?: (config: TimelineEditConfig) => void;
+  onTimelineSave?: (data: any) => void;
+  onTimelineLoad?: (data: any) => void;
+  
   // 可选配置
   className?: string;
   disabled?: boolean;
   showKeyframes?: boolean;
   showPreview?: boolean;
   height?: number;
+  editMode?: boolean;
+  allowKeyframeDrag?: boolean;
+  allowDurationEdit?: boolean;
 }
 
 // 预览信息接口
@@ -44,14 +62,33 @@ interface PreviewInfo {
 }
 
 /**
- * 关键帧标记组件
+ * 关键帧标记组件（增强版，支持编辑）
  */
 const KeyframeMarker: React.FC<{
   keyframe: Keyframe;
   position: number;
   onClick: () => void;
   isActive: boolean;
-}> = ({ keyframe, position, onClick, isActive }) => {
+  editMode?: boolean;
+  allowDrag?: boolean;
+  onDrag?: (keyframeId: string, newTime: number) => void;
+  onDurationChange?: (keyframeId: string, newDuration: number) => void;
+  totalDuration: number;
+}> = ({ 
+  keyframe, 
+  position, 
+  onClick, 
+  isActive, 
+  editMode = false,
+  allowDrag = false,
+  onDrag,
+  onDurationChange,
+  totalDuration
+}) => {
+  const [isDragging, setIsDragging] = useState(false);
+  const [showDurationEditor, setShowDurationEditor] = useState(false);
+  const [tempDuration, setTempDuration] = useState(keyframe.time.toString());
+
   const getIcon = () => {
     switch (keyframe.type) {
       case 'voice':
@@ -71,23 +108,136 @@ const KeyframeMarker: React.FC<{
     }
   };
 
+  // 处理关键帧拖拽
+  const handleMouseDown = useCallback((event: React.MouseEvent) => {
+    if (!editMode || !allowDrag || !onDrag) {
+      onClick();
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+    setIsDragging(true);
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const container = (event.target as HTMLElement).closest('.timeline-control');
+      if (!container) return;
+
+      const rect = container.getBoundingClientRect();
+      const relativeX = e.clientX - rect.left;
+      const progress = Math.max(0, Math.min(1, relativeX / rect.width));
+      const newTime = progress * totalDuration;
+      
+      onDrag(keyframe.id, newTime);
+    };
+
+    const handleMouseUp = () => {
+      setIsDragging(false);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  }, [editMode, allowDrag, onDrag, onClick, keyframe.id, totalDuration]);
+
+  // 处理时长编辑
+  const handleDurationEdit = useCallback(() => {
+    if (!editMode || !onDurationChange) return;
+    setShowDurationEditor(true);
+  }, [editMode, onDurationChange]);
+
+  const handleDurationSave = useCallback(() => {
+    if (!onDurationChange) return;
+    const newDuration = parseFloat(tempDuration);
+    if (!isNaN(newDuration) && newDuration > 0) {
+      onDurationChange(keyframe.id, newDuration);
+    }
+    setShowDurationEditor(false);
+  }, [onDurationChange, keyframe.id, tempDuration]);
+
+  const handleDurationCancel = useCallback(() => {
+    setTempDuration(keyframe.time.toString());
+    setShowDurationEditor(false);
+  }, [keyframe.time]);
+
   return (
     <div
-      className={`absolute top-0 transform -translate-x-1/2 cursor-pointer transition-all duration-200 ${
+      className={`absolute top-0 transform -translate-x-1/2 transition-all duration-200 ${
+        editMode && allowDrag ? 'cursor-move' : 'cursor-pointer'
+      } ${
         isActive ? 'scale-125 z-20' : 'hover:scale-110 z-10'
+      } ${
+        isDragging ? 'scale-150 z-30' : ''
       }`}
       style={{ left: `${position * 100}%` }}
-      onClick={onClick}
-      title={keyframe.title}
+      onMouseDown={handleMouseDown}
+      title={editMode ? `${keyframe.title} (可编辑)` : keyframe.title}
     >
       <div
         className={`w-3 h-3 rounded-full border-2 border-white shadow-md flex items-center justify-center text-xs ${
           isActive ? 'ring-2 ring-blue-400' : ''
+        } ${
+          isDragging ? 'ring-2 ring-green-400' : ''
+        } ${
+          editMode ? 'border-yellow-400' : ''
         }`}
         style={{ backgroundColor: keyframe.color }}
       >
         <span className="text-white text-[8px]">{getIcon()}</span>
       </div>
+
+      {/* 编辑模式下的额外控制 */}
+      {editMode && isActive && (
+        <div className="absolute top-full mt-2 left-1/2 transform -translate-x-1/2 bg-white rounded-lg shadow-lg p-2 min-w-32">
+          <div className="text-xs space-y-2">
+            <div className="font-medium text-gray-700">{keyframe.title}</div>
+            
+            {/* 时长编辑 */}
+            {onDurationChange && (
+              <div>
+                <label className="block text-gray-600 mb-1">时长 (ms):</label>
+                {showDurationEditor ? (
+                  <div className="flex space-x-1">
+                    <input
+                      type="number"
+                      value={tempDuration}
+                      onChange={(e) => setTempDuration(e.target.value)}
+                      className="w-16 px-1 py-0.5 text-xs border rounded"
+                      min="0"
+                      step="100"
+                    />
+                    <button
+                      onClick={handleDurationSave}
+                      className="px-1 py-0.5 text-xs bg-green-500 text-white rounded hover:bg-green-600"
+                    >
+                      ✓
+                    </button>
+                    <button
+                      onClick={handleDurationCancel}
+                      className="px-1 py-0.5 text-xs bg-gray-500 text-white rounded hover:bg-gray-600"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ) : (
+                  <div
+                    onClick={handleDurationEdit}
+                    className="cursor-pointer text-blue-600 hover:text-blue-800"
+                  >
+                    {keyframe.time}ms (点击编辑)
+                  </div>
+                )}
+              </div>
+            )}
+            
+            {/* 位置信息 */}
+            <div className="text-gray-500">
+              位置: {Math.round(position * 100)}%
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -132,6 +282,198 @@ const PreviewTooltip: React.FC<{
 };
 
 /**
+ * 时间轴导出对话框组件
+ */
+const TimelineExportDialog: React.FC<{
+  isOpen: boolean;
+  onClose: () => void;
+  onExport: (config: TimelineEditConfig) => void;
+  keyframes: Keyframe[];
+  totalDuration: number;
+}> = ({ isOpen, onClose, onExport, keyframes, totalDuration }) => {
+  const [config, setConfig] = useState<TimelineEditConfig>({
+    format: 'json',
+    includeMetadata: true,
+    includeTimestamps: true,
+    includeKeyframes: true
+  });
+
+  if (!isOpen) return null;
+
+  const handleExport = () => {
+    onExport(config);
+    onClose();
+  };
+
+  const formatTime = (time: number) => {
+    const seconds = Math.floor(time / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-lg font-semibold">导出时间轴配置</h3>
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          {/* 导出格式 */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              导出格式
+            </label>
+            <select
+              value={config.format}
+              onChange={(e) => setConfig(prev => ({ ...prev, format: e.target.value as unknown }))}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="json">JSON</option>
+              <option value="yaml">YAML</option>
+              <option value="csv">CSV</option>
+            </select>
+          </div>
+
+          {/* 包含选项 */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              包含内容
+            </label>
+            <div className="space-y-2">
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={config.includeMetadata}
+                  onChange={(e) => setConfig(prev => ({ ...prev, includeMetadata: e.target.checked }))}
+                  className="mr-2"
+                />
+                <span className="text-sm">元数据信息</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={config.includeTimestamps}
+                  onChange={(e) => setConfig(prev => ({ ...prev, includeTimestamps: e.target.checked }))}
+                  className="mr-2"
+                />
+                <span className="text-sm">时间戳</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={config.includeKeyframes}
+                  onChange={(e) => setConfig(prev => ({ ...prev, includeKeyframes: e.target.checked }))}
+                  className="mr-2"
+                />
+                <span className="text-sm">关键帧信息</span>
+              </label>
+            </div>
+          </div>
+
+          {/* 预览信息 */}
+          <div className="bg-gray-50 p-3 rounded-md">
+            <h4 className="text-sm font-medium text-gray-700 mb-2">预览信息</h4>
+            <div className="text-xs text-gray-600 space-y-1">
+              <div>总时长: {formatTime(totalDuration)}</div>
+              <div>关键帧数量: {keyframes.length}</div>
+              <div>导出格式: {config.format.toUpperCase()}</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex justify-end space-x-3 mt-6">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800"
+          >
+            取消
+          </button>
+          <button
+            onClick={handleExport}
+            className="px-4 py-2 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          >
+            导出
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/**
+ * 时间轴编辑工具栏组件
+ */
+const TimelineEditToolbar: React.FC<{
+  editMode: boolean;
+  onToggleEditMode: () => void;
+  onExport: () => void;
+  onSave: () => void;
+  onLoad: () => void;
+  onReset: () => void;
+}> = ({ editMode, onToggleEditMode, onExport, onSave, onLoad, onReset }) => {
+  return (
+    <div className="flex items-center justify-between bg-gray-50 px-3 py-2 rounded-lg mb-2">
+      <div className="flex items-center space-x-2">
+        <button
+          onClick={onToggleEditMode}
+          className={`px-3 py-1 text-xs rounded-md transition-colors ${
+            editMode
+              ? 'bg-green-500 text-white hover:bg-green-600'
+              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+          }`}
+        >
+          {editMode ? '✓ 编辑模式' : '✏️ 编辑模式'}
+        </button>
+        
+        {editMode && (
+          <>
+            <button
+              onClick={onSave}
+              className="px-3 py-1 text-xs bg-blue-500 text-white rounded-md hover:bg-blue-600"
+              title="保存配置"
+            >
+              💾 保存
+            </button>
+            <button
+              onClick={onLoad}
+              className="px-3 py-1 text-xs bg-purple-500 text-white rounded-md hover:bg-purple-600"
+              title="加载配置"
+            >
+              📁 加载
+            </button>
+            <button
+              onClick={onReset}
+              className="px-3 py-1 text-xs bg-red-500 text-white rounded-md hover:bg-red-600"
+              title="重置配置"
+            >
+              🔄 重置
+            </button>
+          </>
+        )}
+      </div>
+      
+      <div className="flex items-center space-x-2">
+        <button
+          onClick={onExport}
+          className="px-3 py-1 text-xs bg-indigo-500 text-white rounded-md hover:bg-indigo-600"
+          title="导出时间轴"
+        >
+          📤 导出
+        </button>
+      </div>
+    </div>
+  );
+};
+
+/**
  * 交互式时间轴控制器组件
  * 提供可拖拽的进度条、关键帧标记、悬停预览等功能
  */
@@ -145,11 +487,19 @@ export const TimelineControl: React.FC<TimelineControlProps> = ({
   onKeyframeClick,
   onDragStart,
   onDragEnd,
+  onKeyframeDrag,
+  onKeyframeDurationChange,
+  onTimelineExport,
+  onTimelineSave,
+  onTimelineLoad,
   className = '',
   disabled = false,
   showKeyframes = true,
   showPreview = true,
-  height = 40
+  height = 40,
+  editMode = false,
+  allowKeyframeDrag = false,
+  allowDurationEdit = false
 }) => {
   // 状态管理
   const [isDragging, setIsDragging] = useState(false);
@@ -160,6 +510,8 @@ export const TimelineControl: React.FC<TimelineControlProps> = ({
     visible: false
   });
   const [activeKeyframe, setActiveKeyframe] = useState<Keyframe | null>(null);
+  const [internalEditMode, setInternalEditMode] = useState(editMode);
+  const [showExportDialog, setShowExportDialog] = useState(false);
 
   // DOM 引用
   const trackRef = useRef<HTMLDivElement>(null);
@@ -257,8 +609,76 @@ export const TimelineControl: React.FC<TimelineControlProps> = ({
   const handleKeyframeClick = useCallback((keyframe: Keyframe) => {
     if (disabled) return;
     onKeyframeClick(keyframe);
-    onSeek(keyframe.time);
-  }, [disabled, onKeyframeClick, onSeek]);
+    if (!internalEditMode) {
+      onSeek(keyframe.time);
+    }
+  }, [disabled, onKeyframeClick, onSeek, internalEditMode]);
+
+  // 编辑模式切换
+  const handleToggleEditMode = useCallback(() => {
+    setInternalEditMode(prev => !prev);
+  }, []);
+
+  // 导出处理
+  const handleExport = useCallback(() => {
+    setShowExportDialog(true);
+  }, []);
+
+  const handleExportConfirm = useCallback((config: TimelineEditConfig) => {
+    if (onTimelineExport) {
+      onTimelineExport(config);
+    }
+  }, [onTimelineExport]);
+
+  // 保存处理
+  const handleSave = useCallback(() => {
+    if (onTimelineSave) {
+      const timelineData = {
+        totalDuration,
+        currentTime,
+        keyframes,
+        timestamp: Date.now(),
+        version: '1.0'
+      };
+      onTimelineSave(timelineData);
+    }
+  }, [onTimelineSave, totalDuration, currentTime, keyframes]);
+
+  // 加载处理
+  const handleLoad = useCallback(() => {
+    if (onTimelineLoad) {
+      // 这里应该打开文件选择对话框，简化处理
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.json,.yaml,.yml';
+      input.onchange = (e) => {
+        const file = (e.target as HTMLInputElement).files?.[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            try {
+              const data = JSON.parse(event.target?.result as string);
+              onTimelineLoad(data);
+            } catch (error) {
+              console.error('Failed to load timeline data:', error);
+              alert('加载时间轴配置失败，请检查文件格式');
+            }
+          };
+          reader.readAsText(file);
+        }
+      };
+      input.click();
+    }
+  }, [onTimelineLoad]);
+
+  // 重置处理
+  const handleReset = useCallback(() => {
+    if (confirm('确定要重置时间轴配置吗？此操作不可撤销。')) {
+      // 重置到初始状态
+      onSeek(0);
+      setActiveKeyframe(null);
+    }
+  }, [onSeek]);
 
   // 键盘事件处理
   useEffect(() => {
@@ -304,11 +724,26 @@ export const TimelineControl: React.FC<TimelineControlProps> = ({
   };
 
   return (
-    <div className={`timeline-control ${className}`} style={{ height }}>
+    <div className={`timeline-control ${className}`} style={{ height: height + (internalEditMode ? 40 : 0) }}>
+      {/* 编辑工具栏 */}
+      {(editMode || internalEditMode) && (
+        <TimelineEditToolbar
+          editMode={internalEditMode}
+          onToggleEditMode={handleToggleEditMode}
+          onExport={handleExport}
+          onSave={handleSave}
+          onLoad={handleLoad}
+          onReset={handleReset}
+        />
+      )}
+
       {/* 时间显示 */}
       <div className="flex justify-between text-xs text-gray-500 mb-2">
         <span>{formatTime(currentTime)}</span>
         <span>{formatTime(totalDuration)}</span>
+        {internalEditMode && (
+          <span className="text-green-600 font-medium">编辑模式</span>
+        )}
       </div>
       
       {/* 时间轴轨道 */}
@@ -348,6 +783,11 @@ export const TimelineControl: React.FC<TimelineControlProps> = ({
               position={totalDuration > 0 ? keyframe.time / totalDuration : 0}
               onClick={() => handleKeyframeClick(keyframe)}
               isActive={activeKeyframe?.id === keyframe.id}
+              editMode={internalEditMode}
+              allowDrag={allowKeyframeDrag}
+              onDrag={onKeyframeDrag}
+              onDurationChange={onKeyframeDurationChange}
+              totalDuration={totalDuration}
             />
           ))}
           
@@ -382,8 +822,20 @@ export const TimelineControl: React.FC<TimelineControlProps> = ({
             <span>{keyframes.length} 个关键帧</span>
           )}
           <span>进度: {Math.round(progress * 100)}%</span>
+          {internalEditMode && (
+            <span className="text-yellow-600">可拖拽关键帧调整位置</span>
+          )}
         </div>
       </div>
+
+      {/* 导出对话框 */}
+      <TimelineExportDialog
+        isOpen={showExportDialog}
+        onClose={() => setShowExportDialog(false)}
+        onExport={handleExportConfirm}
+        keyframes={keyframes}
+        totalDuration={totalDuration}
+      />
     </div>
   );
 };

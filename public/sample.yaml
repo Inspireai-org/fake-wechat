@@ -3,9 +3,9 @@ scene:
   title: "朋友间的对话"
   participants:
     - name: "小明"
-      avatar: "avatar1.jpg"
+      avatar: "https://ui-avatars.com/api/?name=XM&background=4A90E2&color=fff&size=200"
     - name: "小红" 
-      avatar: "avatar2.jpg"
+      avatar: "https://ui-avatars.com/api/?name=XH&background=FF6B6B&color=fff&size=200"
 
 # 对话内容
 messages:

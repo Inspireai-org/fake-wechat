@@ -15,8 +15,8 @@ function App() {
     scene: {
       title: "朋友间的对话",
       participants: [
-        { name: "小明", avatar: "" },
-        { name: "小红", avatar: "" }
+        { name: "小明", avatar: "https://ui-avatars.com/api/?name=XM&background=4A90E2&color=fff&size=200" },
+        { name: "小红", avatar: "https://ui-avatars.com/api/?name=XH&background=FF6B6B&color=fff&size=200" }
       ]
     },
     messages: [
