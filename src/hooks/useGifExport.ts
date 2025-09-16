@@ -155,8 +155,8 @@ export function useGifExport() {
         const event = new CustomEvent('updateMessageIndex', { detail: i - 1 });
         container.dispatchEvent(event);
 
-        // 等待DOM更新
-        await new Promise(resolve => setTimeout(resolve, 100));
+        // 等待React重新渲染和DOM更新
+        await new Promise(resolve => setTimeout(resolve, 200));
 
         // 截取当前状态
         const canvas = await html2canvas(container, {
@@ -185,6 +185,10 @@ export function useGifExport() {
       container.style.width = originalStyle.width;
       container.style.height = originalStyle.height;
       container.style.overflow = originalStyle.overflow;
+      
+      // 通知导出完成，重置导出模式
+      const resetEvent = new CustomEvent('exportComplete');
+      container.dispatchEvent(resetEvent);
 
       // 开始渲染GIF
       gif.render();
