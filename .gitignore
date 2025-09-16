@@ -21,4 +21,5 @@ dist-ssr
 *.ntvs*
 *.njsproj
 *.sln
-*.sw?
+*.sw?# Generated worker file
+public/gif.worker.js

@@ -4,11 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "npm run copy-workers && vite",
+    "build": "npm run copy-workers && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "check": "tsc -b --noEmit"
+    "check": "tsc -b --noEmit",
+    "copy-workers": "cp -f node_modules/.pnpm/gif.js@*/node_modules/gif.js/dist/gif.worker.js public/ 2>/dev/null || cp -f node_modules/gif.js/dist/gif.worker.js public/ 2>/dev/null || true"
   },
   "dependencies": {
     "@types/js-yaml": "^4.0.9",

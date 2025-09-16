@@ -139,7 +139,8 @@ class PlaybackStateManager {
   // 获取单条消息的时长
   private getMessageDuration(message: Message): number {
     if (message.type === 'pause') {
-      return this.parseDescriptiveTime(message.duration);
+      // 对于pause类型，使用特殊的压缩逻辑
+      return this.parseDescriptiveTime(message.duration, true);
     } else if (message.type === 'typing') {
       return this.parseDescriptiveTime(message.statusDuration || message.duration || '3s');
     } else if (message.type === 'recall') {
@@ -159,7 +160,7 @@ class PlaybackStateManager {
   }
 
   // 解析描述性时间
-  private parseDescriptiveTime(duration: string | undefined): number {
+  private parseDescriptiveTime(duration: string | undefined, compressForPause: boolean = false): number {
     if (!duration) return 800;  // 默认延迟调整为800ms
     
     // 支持的描述性时间映射（调整为更合理的值）
@@ -189,24 +190,52 @@ class PlaybackStateManager {
       const value = parseFloat(match[1]);
       const unit = match[2] || 's';
       
+      let milliseconds = 0;
       switch (unit.toLowerCase()) {
         case '秒':
         case 's':
         case 'sec':
         case 'second':
-          return value * 1000;
+          milliseconds = value * 1000;
+          break;
         case '分钟':
         case 'm':
         case 'min':
         case 'minute':
-          return value * 60 * 1000;
+          milliseconds = value * 60 * 1000;
+          break;
         case '小时':
         case 'h':
         case 'hour':
-          return value * 60 * 60 * 1000;
+          milliseconds = value * 60 * 60 * 1000;
+          break;
         default:
-          return value * 1000; // 默认为秒
+          milliseconds = value * 1000; // 默认为秒
       }
+      
+      // 如果是pause类型，根据设计文档压缩时长
+      // 演绎时间应该在0.5-5秒之间
+      if (compressForPause && milliseconds > 5000) {
+        // 对长时间进行对数压缩
+        // 1分钟 -> 2秒
+        // 5分钟 -> 2.5秒
+        // 30分钟 -> 3秒
+        // 1小时 -> 3.5秒
+        // 更长 -> 最多4秒
+        if (milliseconds <= 60000) { // <= 1分钟
+          return Math.min(milliseconds, 2000);
+        } else if (milliseconds <= 300000) { // <= 5分钟
+          return 2500;
+        } else if (milliseconds <= 1800000) { // <= 30分钟
+          return 3000;
+        } else if (milliseconds <= 3600000) { // <= 1小时
+          return 3500;
+        } else {
+          return 4000; // 超过1小时一律4秒
+        }
+      }
+      
+      return milliseconds;
     }
     
     return 1500; // 默认延迟

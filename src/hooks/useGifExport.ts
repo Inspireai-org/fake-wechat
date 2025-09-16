@@ -55,7 +55,8 @@ export function useGifExport() {
         quality,
         width,
         height,
-        repeat
+        repeat,
+        workerScript: '/gif.worker.js'  // 指定 worker 文件路径
       });
 
       // 监听GIF生成进度
@@ -102,11 +103,45 @@ export function useGifExport() {
       const getMessageDelay = (message: Message): number => {
         if (message.type === 'pause') {
           const duration = message.duration || '1秒';
-          const match = duration.match(/(\d+)(秒|分钟)/);
+          const match = duration.match(/(\d+\.?\d*)\s*(秒|s|分钟|m|小时|h)?/i);
           if (match) {
-            const value = parseInt(match[1]);
-            const unit = match[2];
-            return unit === '分钟' ? value * 1000 : value * 200; // 缩短实际时间
+            const value = parseFloat(match[1]);
+            const unit = match[2] || '秒';
+            
+            let milliseconds = 0;
+            switch (unit.toLowerCase()) {
+              case '秒':
+              case 's':
+                milliseconds = value * 1000;
+                break;
+              case '分钟':
+              case 'm':
+                milliseconds = value * 60 * 1000;
+                break;
+              case '小时':
+              case 'h':
+                milliseconds = value * 60 * 60 * 1000;
+                break;
+              default:
+                milliseconds = value * 1000;
+            }
+            
+            // 根据设计文档压缩时长，演绎时间应该在0.5-5秒之间
+            if (milliseconds > 5000) {
+              if (milliseconds <= 60000) { // <= 1分钟
+                return Math.min(milliseconds, 2000);
+              } else if (milliseconds <= 300000) { // <= 5分钟
+                return 2500;
+              } else if (milliseconds <= 1800000) { // <= 30分钟
+                return 3000;
+              } else if (milliseconds <= 3600000) { // <= 1小时
+                return 3500;
+              } else {
+                return 4000; // 超过1小时一律4秒
+              }
+            }
+            
+            return milliseconds;
           }
         } else if (message.type === 'typing') {
           return 800; // 打字状态显示800ms
